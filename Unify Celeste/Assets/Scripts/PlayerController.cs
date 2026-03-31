@@ -4,12 +4,20 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 8f;
 
+    public float jump = 5f;
+    public Rigidbody2D rb;
+    // public bool onGround = true;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     // Consistently calling movement functions.
     void Update()
     {
         HorizontalMovement();
         Jump();
-        Crouch();
     }
 
     void HorizontalMovement()
@@ -21,11 +29,26 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        
+        if (Input.GetKeyDown(KeyCode.C))
+        //if (Input.GetKeyDown(KeyCode.C) && onGround)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
+        }
     }
 
-    void Crouch()
-    {
-        
-    }
+    // private void OnCollisionEnter2D(Collision2D c)
+    // {
+    //     if (c.gameObject.CompareTag("Ground"))
+    //     {
+    //         onGround = true;
+    //     }
+    // }
+
+    // private void OnCollisionExit2D(Collision2D c)
+    // {
+    //     if (c.gameObject.CompareTag("Ground"))
+    //     {
+    //         onGround = false;
+    //     }
+    // }
 }
