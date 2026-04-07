@@ -24,20 +24,20 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if(rb == null)
-        {
-            Debug.LogError("player is missing a rigid body");
-        }
-
         tr = GetComponent<TrailRenderer>();
     }
 
     // Consistently calling movement functions.
     void FixedUpdate()
     {
+        if (isDashing)
+        {
+            rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
+            return;
+        }
+
         HorizontalMovement();
         Jump();
-
     }
 
     void Update()
@@ -60,12 +60,6 @@ public class PlayerController : MonoBehaviour
 
         // animator.SetBool("IsDashing", isDashing)
 
-        if (isDashing)
-        {
-            rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
-            return;
-        }
-
         if (onGround)
         {
             isAbleToDash = true;
@@ -82,8 +76,7 @@ public class PlayerController : MonoBehaviour
     void HorizontalMovement()
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
-        Vector3 movement = new Vector3(horizontalMovement, 0f, 0f);
-        transform.Translate(movement * speed * Time.deltaTime); 
+        rb.linearVelocity = new Vector2(horizontalMovement * speed, rb.linearVelocity.y);
     }
 
     void Jump()
