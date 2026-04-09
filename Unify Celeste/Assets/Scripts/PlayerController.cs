@@ -1,34 +1,98 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    private TrailRenderer tr;
+
+    [Header("Jumping")]
     [SerializeField] float speed = 8f;
     [SerializeField] float jump = 5f;
     private Rigidbody2D rb;
     private bool onGround;
 
+    [Header("Dashing")]
+    [SerializeField] float dashingVelocity = 10f;
+    [SerializeField] float dashingTime = 0.5f;
+    private Vector2 dashingDirection;
+    private bool isDashing;
+    public bool isAbleToDash = true;
+
+    [Header("Crouching")]
+    private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
+    private Vector3 playerScale = new Vector3(1, 1f, 1);
+        
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if(rb == null)
-        {
-            Debug.LogError("player is missing a rigid body");
-        }
+        tr = GetComponent<TrailRenderer>();
     }
 
     // Consistently calling movement functions.
     void FixedUpdate()
     {
+        if (isDashing)
+        {
+            rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
+            return;
+        }
+
         HorizontalMovement();
         Jump();
+    }
+
+    void Update()
+    {
+        var dashInput = Input.GetButtonDown("Dash");
+
+        if (dashInput && isAbleToDash)
+        {
+            isDashing = true;
+            isAbleToDash = false;
+            tr.emitting = true;
+            dashingDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            if (dashingDirection == Vector2.zero)
+            {
+                dashingDirection = new Vector2(transform.localScale.x, 0); // we want atlas to stay in place if theres no direction, change later
+            }
+            StartCoroutine(StopDashing());
+        }
+
+        // animator.SetBool("IsDashing", isDashing)
+
+        if (onGround)
+        {
+            isAbleToDash = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            transform.localScale = crouchScale;
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            transform.localScale = playerScale;
+            transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        }
+    }
+
+    private IEnumerator StopDashing()
+    {
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        isDashing = false;
     }
 
     void HorizontalMovement()
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
-        Vector3 movement = new Vector3(horizontalMovement, 0f, 0f);
-        transform.Translate(movement * speed * Time.deltaTime); 
+        rb.linearVelocity = new Vector2(horizontalMovement * speed, rb.linearVelocity.y);
     }
 
     void Jump()
