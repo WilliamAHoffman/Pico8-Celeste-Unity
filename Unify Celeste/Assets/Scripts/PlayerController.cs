@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private TrailRenderer tr;
 
-    [Header("Movement")]
+    [Header("Jumping")]
     [SerializeField] float speed = 8f;
     [SerializeField] float jump = 5f;
     private Rigidbody2D rb;
@@ -19,7 +19,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashingTime = 0.5f;
     private Vector2 dashingDirection;
     private bool isDashing;
-    private bool isAbleToDash = true;
+    public bool isAbleToDash = true;
+
+    [Header("Crouching")]
+    private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
+    private Vector3 playerScale = new Vector3(1, 1f, 1);
         
     void Start()
     {
@@ -63,6 +67,18 @@ public class PlayerController : MonoBehaviour
         if (onGround)
         {
             isAbleToDash = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            transform.localScale = crouchScale;
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            transform.localScale = playerScale;
+            transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         }
     }
 
