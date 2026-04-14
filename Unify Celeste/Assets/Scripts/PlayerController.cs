@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float speed = 4f;
     [SerializeField] float jump = 5f;
+
+    [Header("Wall")]
+    [SerializeField] float wallJumpTime = 0.3f;
     [SerializeField] float wallSpeed = 1f;
 
     [Header("Dashing")]
@@ -29,7 +32,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckDistance = 0.6f;
     [SerializeField] float wallCheckDistance = 0.6f;
-    [SerializeField] float rayOffset = 0.4f;
+    [SerializeField] float groundRayOffset = 0.4f;    
+    [SerializeField] float wallRayOffset = 0.4f;    
 
     [Header("States")]
     public bool onGround;
@@ -39,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public bool isDashing;
     public bool crouching;
     public bool lookingUp;
+    public bool wallJumping;
 
     private Rigidbody2D rb;
     private TrailRenderer tr;
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         wallCling = false;
         if (isDashing) return;
+        if(wallJumping && !onGround) return;
         if (onWall)
         {
             if (moveInput.x == 1 && wallDirection == 1) wallCling = true;
@@ -135,11 +141,24 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
         }
-        else if (onWall)
+        else if (wallCling)
         {
-            // push away from wall
-            Debug.Log("wall jump WIP");
+            WallJump();
         }
+    }
+
+    void WallJump()
+    {
+        wallCling = false;
+        rb.linearVelocity = new Vector2(-wallDirection * jump, jump);
+        wallJumping = true;
+        StartCoroutine(StopWallJumping());
+    }
+
+    IEnumerator StopWallJumping()
+    {
+        yield return new WaitForSeconds(wallJumpTime);
+        wallJumping = false;
     }
 
     void DashCheck()
@@ -188,8 +207,8 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 pos = transform.position;
 
-        RaycastHit2D left = Physics2D.Raycast(pos + Vector2.left * rayOffset, Vector2.down, groundCheckDistance, groundLayer);
-        RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * rayOffset, Vector2.down, groundCheckDistance, groundLayer);
+        RaycastHit2D left = Physics2D.Raycast(pos + Vector2.left * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
+        RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
 
         onGround = left.collider != null || right.collider != null;
     }
@@ -200,6 +219,24 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit2D leftWall = Physics2D.Raycast(pos, Vector2.left, wallCheckDistance, groundLayer);
         RaycastHit2D rightWall = Physics2D.Raycast(pos, Vector2.right, wallCheckDistance, groundLayer);
+
+        if (!leftWall)
+        {
+            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.down * groundRayOffset, wallCheckDistance, groundLayer);
+        }
+        if (!leftWall)
+        {
+            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.up * groundRayOffset, wallCheckDistance, groundLayer);
+        }
+
+        if (!rightWall)
+        {
+            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.down * groundRayOffset, wallCheckDistance, groundLayer);
+        }
+        if (!rightWall)
+        {
+            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.up * groundRayOffset, wallCheckDistance, groundLayer);
+        }
 
         if (leftWall.collider != null)
         {
@@ -224,11 +261,17 @@ public class PlayerController : MonoBehaviour
         Vector2 pos = transform.position;
 
         // ground
-        Gizmos.DrawLine(pos + Vector2.left * rayOffset, pos + Vector2.left * rayOffset + Vector2.down * groundCheckDistance);
-        Gizmos.DrawLine(pos + Vector2.right * rayOffset, pos + Vector2.right * rayOffset + Vector2.down * groundCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.left * groundRayOffset, pos + Vector2.left * groundRayOffset + Vector2.down * groundCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.right * groundRayOffset, pos + Vector2.right * groundRayOffset + Vector2.down * groundCheckDistance);
 
         // walls
         Gizmos.DrawLine(pos, pos + Vector2.left * wallCheckDistance);
         Gizmos.DrawLine(pos, pos + Vector2.right * wallCheckDistance);
+
+        Gizmos.DrawLine(pos + Vector2.up * groundRayOffset, pos + Vector2.up * groundRayOffset + Vector2.left * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.up * groundRayOffset, pos + Vector2.up * groundRayOffset + Vector2.right * wallCheckDistance);
+
+        Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.left * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.right * wallCheckDistance);
     }
 }
