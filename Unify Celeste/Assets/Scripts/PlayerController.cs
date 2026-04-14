@@ -1,126 +1,234 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private TrailRenderer tr;
-
-    [Header("Jumping")]
-    [SerializeField] float speed = 8f;
+    [Header("Movement")]
+    [SerializeField] float speed = 4f;
     [SerializeField] float jump = 5f;
-    private Rigidbody2D rb;
-    private bool onGround;
+    [SerializeField] float wallSpeed = 1f;
 
     [Header("Dashing")]
     [SerializeField] float dashingVelocity = 10f;
     [SerializeField] float dashingTime = 0.5f;
     private Vector2 dashingDirection;
-    private bool isDashing;
     public bool isAbleToDash = true;
 
-    [Header("Crouching")]
-    private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
-    private Vector3 playerScale = new Vector3(1, 1f, 1);
-        
+    [Header("Input")]
+    [SerializeField] InputActionAsset inputActions;
+    private Vector2 moveInput;
+    private bool jumpPressed;
+    private bool dashPressed;
+
+    [Header("Jump Buffer")]
+    [SerializeField] float jumpGraceTime = 0.1f;
+    private float jumpGraceTimer;
+
+    [Header("Raycasts")]
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float groundCheckDistance = 0.6f;
+    [SerializeField] float wallCheckDistance = 0.6f;
+    [SerializeField] float rayOffset = 0.4f;
+
+    [Header("States")]
+    public bool onGround;
+    public bool onWall;
+    public bool wallCling;
+    public int wallDirection;
+    public bool isDashing;
+    public bool crouching;
+    public bool lookingUp;
+
+    private Rigidbody2D rb;
+    private TrailRenderer tr;
+
+    void Awake()
+    {
+        inputActions["Move"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputActions["Move"].canceled += ctx => moveInput = Vector2.zero;
+
+        inputActions["Jump"].started += ctx => jumpPressed = true;
+        inputActions["Dash"].started += ctx => dashPressed = true;
+    }
+
+    void OnEnable() => inputActions.Enable();
+    void OnDisable() => inputActions.Disable();
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
     }
 
-    // Consistently calling movement functions.
     void FixedUpdate()
     {
-        if (isDashing)
-        {
-            rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
-            return;
-        }
+        CheckGround();
+        CheckWall();
+        CheckCling();
 
-        HorizontalMovement();
-        Jump();
+        HorizontalCheck();
+        JumpCheck();
+        LookCheck();
+        DashCheck();
+
+        jumpPressed = false;
+        dashPressed = false;
+
+        if (onGround) isAbleToDash = true;
     }
 
-    void Update()
+    void CheckCling()
     {
-        var dashInput = Input.GetButtonDown("Dash");
-
-        if (dashInput && isAbleToDash)
+        if (wallCling)
         {
-            isDashing = true;
-            isAbleToDash = false;
-            tr.emitting = true;
-            dashingDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            rb.linearVelocity = new Vector2(0, -wallSpeed);
+        }
+    }
+    void HorizontalCheck()
+    {
+        wallCling = false;
+        if (isDashing) return;
+        if (onWall)
+        {
+            if (moveInput.x == 1 && wallDirection == 1) wallCling = true;
+            else if (moveInput.x == -1 && wallDirection == -1) wallCling = true;
+        }
 
-            if (dashingDirection == Vector2.zero)
+        if (!wallCling)
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        }
+    }
+
+    void JumpCheck()
+    {
+        if (jumpPressed)
+        {
+            if (onGround || onWall)
             {
-                dashingDirection = new Vector2(transform.localScale.x, 0); // we want atlas to stay in place if theres no direction, change later
+                Jump();
             }
-            StartCoroutine(StopDashing());
+            else
+            {
+                jumpGraceTimer = jumpGraceTime;
+            }
         }
 
-        // animator.SetBool("IsDashing", isDashing)
-
-        if (onGround)
+        if (jumpGraceTimer > 0)
         {
-            isAbleToDash = true;
+            if (onGround || onWall)
+            {
+                Jump();
+                jumpGraceTimer = 0;
+            }
+            else
+            {
+                jumpGraceTimer -= Time.fixedDeltaTime;
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            transform.localScale = crouchScale;
-            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        }
-
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            transform.localScale = playerScale;
-            transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-        }
-    }
-
-    private IEnumerator StopDashing()
-    {
-        yield return new WaitForSeconds(dashingTime);
-        tr.emitting = false;
-        isDashing = false;
-    }
-
-    void HorizontalMovement()
-    {
-        float horizontalMovement = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector2(horizontalMovement * speed, rb.linearVelocity.y);
     }
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.C) && onGround)
+        if (onGround)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
         }
-    }
-
-    //THIS NEEDS TO VERIFY THAT THE PLAYER IS NOT TOUCHING A WALL
-    //Dont use collision enter and exit
-    //Instead raycast directly down every frame to confirm that there is a floor directly below the player
-
-    private void OnCollisionEnter2D(Collision2D c)
-    {
-        Debug.Log(c);
-        if (c.gameObject.CompareTag("Ground"))
+        else if (onWall)
         {
-            onGround = true;
+            // push away from wall
+            Debug.Log("wall jump WIP");
         }
     }
 
-    private void OnCollisionExit2D(Collision2D c)
+    void DashCheck()
     {
-         if (c.gameObject.CompareTag("Ground"))
-         {
-             onGround = false;
-         }
+        if (dashPressed && isAbleToDash && !isDashing)
+        {
+            StartDash();
+        }
+
+        if (isDashing)
+        {
+            rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
+        }
+    }
+
+    void StartDash()
+    {
+        isDashing = true;
+        isAbleToDash = false;
+        tr.emitting = true;
+
+        dashingDirection = moveInput;
+
+        if (dashingDirection == Vector2.zero)
+        {
+            dashingDirection = new Vector2(transform.localScale.x, 0);
+        }
+
+        StartCoroutine(StopDashing());
+    }
+
+    IEnumerator StopDashing()
+    {
+        yield return new WaitForSeconds(dashingTime);
+        isDashing = false;
+        tr.emitting = false;
+    }
+
+    void LookCheck()
+    {
+        lookingUp = onGround && moveInput.y > 0.5f;
+        crouching = onGround && moveInput.y < -0.5f;
+    }
+
+    void CheckGround()
+    {
+        Vector2 pos = transform.position;
+
+        RaycastHit2D left = Physics2D.Raycast(pos + Vector2.left * rayOffset, Vector2.down, groundCheckDistance, groundLayer);
+        RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * rayOffset, Vector2.down, groundCheckDistance, groundLayer);
+
+        onGround = left.collider != null || right.collider != null;
+    }
+
+    void CheckWall()
+    {
+        Vector2 pos = transform.position;
+
+        RaycastHit2D leftWall = Physics2D.Raycast(pos, Vector2.left, wallCheckDistance, groundLayer);
+        RaycastHit2D rightWall = Physics2D.Raycast(pos, Vector2.right, wallCheckDistance, groundLayer);
+
+        if (leftWall.collider != null)
+        {
+            onWall = true;
+            wallDirection = -1;
+        }
+        else if (rightWall.collider != null)
+        {
+            onWall = true;
+            wallDirection = 1;
+        }
+        else
+        {
+            onWall = false;
+            wallDirection = 0;
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector2 pos = transform.position;
+
+        // ground
+        Gizmos.DrawLine(pos + Vector2.left * rayOffset, pos + Vector2.left * rayOffset + Vector2.down * groundCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.right * rayOffset, pos + Vector2.right * rayOffset + Vector2.down * groundCheckDistance);
+
+        // walls
+        Gizmos.DrawLine(pos, pos + Vector2.left * wallCheckDistance);
+        Gizmos.DrawLine(pos, pos + Vector2.right * wallCheckDistance);
     }
 }
