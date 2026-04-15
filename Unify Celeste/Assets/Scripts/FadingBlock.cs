@@ -3,7 +3,8 @@ using UnityEngine;
 public class FadingBlock : MonoBehaviour
 {
 
-    Animator anim;
+     Animator anim;
+    [SerializeField] GameObject spring;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +26,10 @@ public class FadingBlock : MonoBehaviour
     {
         gameObject.SetActive(false);
         Invoke("ResetBlock", 3);
+        if (spring != null)
+        {
+            spring.SetActive(false);
+        }
     }
 
     private void ResetBlock()
@@ -32,5 +37,9 @@ public class FadingBlock : MonoBehaviour
         
         gameObject.SetActive(true);
         anim.Play("Idle");
+        if (spring != null)
+        { 
+            spring.GetComponent<Spring>().ResetSpring();
+        }
     }
 }
