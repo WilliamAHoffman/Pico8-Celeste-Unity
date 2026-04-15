@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 9195205372267865232}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.14, y: -2.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.3423, y: -1.37504, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,11 +106,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae085b7beadbbd4eb9cfc52abe6545e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speed: 8
+  speed: 4
   jump: 5
-  dashingVelocity: 10
-  dashingTime: 0.5
+  wallSpeed: 1
+  dashingVelocity: 6
+  dashingTime: 0.3
   isAbleToDash: 1
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  jumpGraceTime: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckDistance: 0.3
+  wallCheckDistance: 0.3
+  rayOffset: 0.2
+  onGround: 0
+  onWall: 0
+  wallCling: 0
+  wallDirection: 0
+  isDashing: 0
+  crouching: 0
+  lookingUp: 0
 --- !u!50 &5676364888985867286
 Rigidbody2D:
   serializedVersion: 5

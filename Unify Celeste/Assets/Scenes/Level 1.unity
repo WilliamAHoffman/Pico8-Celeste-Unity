@@ -1357,17 +1357,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &872519745 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
-  m_PrefabInstance: {fileID: 6394627145733067074}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ae085b7beadbbd4eb9cfc52abe6545e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &930689305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,7 +1369,7 @@ GameObject:
   - component: {fileID: 930689308}
   - component: {fileID: 930689307}
   - component: {fileID: 930689309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Land
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -3116,7 +3105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9531fbf00c46fc34fa47c3dcc6bc0877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  playerController: {fileID: 872519745}
+  playerController: {fileID: 0}
   levels:
   - Level 2
   - Level 3
@@ -3972,13 +3961,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 318777904983497361, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 318777904983497361, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: m_Size.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: rayOffset
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: wallSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: wallJumpTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: groundRayOffset
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352262333894480124, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
+      propertyPath: groundCheckDistance
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8098310081860026899, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.14
+      value: -2.3423
       objectReference: {fileID: 0}
     - target: {fileID: 8098310081860026899, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.33
+      value: -1.37504
       objectReference: {fileID: 0}
     - target: {fileID: 8098310081860026899, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4084,7 +4101,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1490384746}
   - {fileID: 511903079}
-  - {fileID: 6394627145733067074}
   - {fileID: 1621105602}
   - {fileID: 9197022268536447060}
   - {fileID: 1139639736775577651}
@@ -4098,3 +4114,4 @@ SceneRoots:
   - {fileID: 1493819056}
   - {fileID: 1101816202}
   - {fileID: 1361852934}
+  - {fileID: 1919823392}
