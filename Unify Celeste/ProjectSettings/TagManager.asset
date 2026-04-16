@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Spikes
+  - Strawberry
   layers:
   - Default
   - TransparentFX
