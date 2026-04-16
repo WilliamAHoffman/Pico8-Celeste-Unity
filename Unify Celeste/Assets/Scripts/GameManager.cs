@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
     public List<string> levels;
     [SerializeField] AudioClip level_music1;
+    public int strawberryCounter = 0;
     AudioSource music_player;
 
     void Awake()

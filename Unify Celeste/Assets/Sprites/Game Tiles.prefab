@@ -2444,29 +2444,29 @@ Tilemap:
   - m_RefCount: 162
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.7916296, g: 0.35057658, b: 0.38034728, a: 1}
+    m_Data: {r: 0.76072025, g: 0.38993222, b: 0.4629223, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.750773, g: 0.45707688, b: 0.5027501, a: 1}
+    m_Data: {r: 0.80639774, g: 0.48234567, b: 0.5642495, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9415742, g: 0.5570258, b: 0.6654855, a: 1}
+    m_Data: {r: 0.9288619, g: 0.50754875, b: 0.64085525, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8776517, g: 0.6081963, b: 0.6778557, a: 1}
+    m_Data: {r: 0.94190866, g: 0.6264354, b: 0.73111665, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9449383, g: 0.55725217, b: 0.6002659, a: 1}
+    m_Data: {r: 0.9286964, g: 0.45878875, b: 0.57294405, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8057105, g: 0.3654019, b: 0.40284473, a: 1}
+    m_Data: {r: 0.86631477, g: 0.40559673, b: 0.5191774, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.7446324, g: 0.49469593, b: 0.51254785, a: 1}
+    m_Data: {r: 0.83037674, g: 0.5667139, b: 0.6315127, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.71450907, g: 0.3150024, b: 0.34179524, a: 1}
+    m_Data: {r: 0.8021196, g: 0.3538474, b: 0.44707614, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9853825, g: 0.5838415, b: 0.59789234, a: 1}
+    m_Data: {r: 0.9953093, g: 0.43375918, b: 0.47719383, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8271192, g: 0.3441793, b: 0.47391766, a: 1}
+    m_Data: {r: 0.9870228, g: 0.5389439, b: 0.636433, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.78002954, g: 0.33905318, b: 0.38950568, a: 1}
+    m_Data: {r: 0.8965797, g: 0.57988524, b: 0.6541436, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.71404034, g: 0.40236023, b: 0.44415295, a: 1}
+    m_Data: {r: 0.8822566, g: 0.54666203, b: 0.5522571, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2557,7 +2557,7 @@ GameObject:
   - component: {fileID: 2218733301323818244}
   - component: {fileID: 6470980097258784098}
   m_Layer: 0
-  m_Name: New Tile Palette
+  m_Name: Game Tiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2591,7 +2591,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &3740658766261603327
+--- !u!114 &8785373532781603313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

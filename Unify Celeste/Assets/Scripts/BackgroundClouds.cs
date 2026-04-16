@@ -21,15 +21,10 @@ public class BackgroundClouds : MonoBehaviour
     {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
 
-        if (Camera.main.WorldToViewportPoint(transform.position).x > 1.4)
+        if (Camera.main.WorldToViewportPoint(transform.position).x > 1.2)
         {
             Destroy(gameObject);
         }
-    }
-
-    void RemoveCloud()
-    {
-        Destroy(gameObject);
     }
 }
 

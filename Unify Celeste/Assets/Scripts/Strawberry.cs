@@ -17,7 +17,7 @@ public class Strawberry : MonoBehaviour
         {
             sr.enabled = false;
             cl.enabled = false;
-            c.GetComponent<PlayerController>().strawberryCounter++;
+            GameManager.instance.strawberryCounter++;
         }
     }
 }

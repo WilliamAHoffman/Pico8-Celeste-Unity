@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 183624069}
   - component: {fileID: 183624071}
   - component: {fileID: 183624070}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1115,7 +1115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 511903079}
   - component: {fileID: 511903078}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1165,7 +1165,7 @@ GameObject:
   - component: {fileID: 621602691}
   - component: {fileID: 621602693}
   - component: {fileID: 621602692}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: other
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1419,7 +1419,7 @@ GameObject:
   - component: {fileID: 930689308}
   - component: {fileID: 930689307}
   - component: {fileID: 930689309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Land
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -2325,6 +2325,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrunchBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 1190294364984952612, guid: 9631993ce8f4e474f9767b4b6642c3f2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917539891693939508, guid: 9631993ce8f4e474f9767b4b6642c3f2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7482020761523009581, guid: 9631993ce8f4e474f9767b4b6642c3f2, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -2535,7 +2543,7 @@ GameObject:
   - component: {fileID: 1862349014}
   - component: {fileID: 1862349016}
   - component: {fileID: 1862349015}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2823,7 +2831,7 @@ GameObject:
   - component: {fileID: 1874087942}
   - component: {fileID: 1874087944}
   - component: {fileID: 1874087943}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}

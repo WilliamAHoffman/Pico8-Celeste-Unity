@@ -7,6 +7,7 @@ public class Background : MonoBehaviour
     [SerializeField] Color bg_color;
     [SerializeField] Color cloud_color;
     [SerializeField] GameObject cloud_prefab;
+    [SerializeField] float spawnRate = 0.5f;
     
 
     
@@ -22,13 +23,7 @@ public class Background : MonoBehaviour
             Instantiate(cloud_prefab, new Vector3(Random.Range(minX,maxX), Random.Range(minY, maxY), 0), Quaternion.identity);
 
         }
-        InvokeRepeating("SpawnCloud", .1f, .1f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InvokeRepeating("SpawnCloud", spawnRate, spawnRate);
     }
 
 

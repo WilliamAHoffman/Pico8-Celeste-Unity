@@ -77,8 +77,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1269909375
+  m_SortingLayer: -1
   m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.003921569, g: 0, b: 0.003921569, a: 1}
@@ -106,3 +106,4 @@ MonoBehaviour:
   bg_color: {r: 0, g: 0, b: 0, a: 0}
   cloud_color: {r: 0.11764707, g: 0.16470589, b: 0.32941177, a: 1}
   cloud_prefab: {fileID: 8285276562757968243, guid: ea483895c53eef64e82ef292f52b62a9, type: 3}
+  spawnRate: 0.5

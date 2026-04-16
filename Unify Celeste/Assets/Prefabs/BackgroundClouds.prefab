@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8995119089637129862}
   - component: {fileID: 5318355092188558068}
   - component: {fileID: 2297304853714543651}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BackgroundClouds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,8 +77,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1269909375
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.11764707, g: 0.16862746, b: 0.32941177, a: 1}

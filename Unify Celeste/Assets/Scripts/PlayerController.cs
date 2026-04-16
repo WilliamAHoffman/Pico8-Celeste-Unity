@@ -48,9 +48,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private TrailRenderer tr;
 
-    [Header("Counters")]
-    public int strawberryCounter = 0;
-
     void Awake()
     {
         inputActions["Move"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -98,7 +95,7 @@ public class PlayerController : MonoBehaviour
         wallCling = false;
         if (isDashing) return;
         if(wallJumping && !onGround) return;
-        if (onWall)
+        if (onWall && !onGround)
         {
             if (moveInput.x == 1 && wallDirection == 1) wallCling = true;
             else if (moveInput.x == -1 && wallDirection == -1) wallCling = true;

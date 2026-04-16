@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5676364888985867286}
   - component: {fileID: 318777904983497361}
   - component: {fileID: 3534715399119492862}
+  - component: {fileID: 2061995021980153186}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 4
   jump: 5
-  wallJumpTime: 0.3
+  wallJumpTime: 0.1
   wallSpeed: 1
   dashingVelocity: 6
   dashingTime: 0.3
@@ -120,7 +121,7 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckDistance: 0.3
   wallCheckDistance: 0.3
-  groundRayOffset: 0.4
+  groundRayOffset: 0.253
   wallRayOffset: 0.4
   onGround: 0
   onWall: 0
@@ -340,3 +341,15 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &2061995021980153186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9195205372267865232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04e8a014ac1ec4829998564bc600dc97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Death
