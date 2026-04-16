@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - Spikes
+  - Strawberry
   layers:
   - Default
   - TransparentFX
