@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3534715399119492862}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 4
   jump: 5
+  wallJumpTime: 0.3
   wallSpeed: 1
   dashingVelocity: 6
   dashingTime: 0.3
@@ -119,7 +120,8 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckDistance: 0.3
   wallCheckDistance: 0.3
-  rayOffset: 0.2
+  groundRayOffset: 0.4
+  wallRayOffset: 0.4
   onGround: 0
   onWall: 0
   wallCling: 0
@@ -127,6 +129,7 @@ MonoBehaviour:
   isDashing: 0
   crouching: 0
   lookingUp: 0
+  wallJumping: 0
 --- !u!50 &5676364888985867286
 Rigidbody2D:
   serializedVersion: 5

@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private TrailRenderer tr;
 
+    [Header("Counters")]
+    public int strawberryCounter = 0;
+
     void Awake()
     {
         inputActions["Move"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
