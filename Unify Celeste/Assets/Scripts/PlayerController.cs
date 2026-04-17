@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] InputActionAsset inputActions;
-    private Vector2 moveInput;
+    public Vector2 moveInput;
     private bool jumpPressed;
     private bool dashPressed;
 
@@ -97,8 +97,8 @@ public class PlayerController : MonoBehaviour
         if(wallJumping && !onGround) return;
         if (onWall && !onGround)
         {
-            if (moveInput.x == 1 && wallDirection == 1) wallCling = true;
-            else if (moveInput.x == -1 && wallDirection == -1) wallCling = true;
+            if (moveInput.x >= 0.5f && wallDirection == 1) wallCling = true;
+            else if (moveInput.x <= -0.5f && wallDirection == -1) wallCling = true;
         }
 
         if (!wallCling)
@@ -199,6 +199,12 @@ public class PlayerController : MonoBehaviour
 
     void LookCheck()
     {
+        if (!onGround)
+        {
+            lookingUp = false;
+            crouching = false;
+            return;
+        }
         lookingUp = onGround && moveInput.y > 0.5f;
         crouching = onGround && moveInput.y < -0.5f;
     }
