@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7482020761523009581}
   - component: {fileID: 768996567229909723}
   - component: {fileID: 8895535684992526720}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CrunchBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 5511310633582722484}
   - component: {fileID: 138040053396099824}
   - component: {fileID: 6304323455078193601}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

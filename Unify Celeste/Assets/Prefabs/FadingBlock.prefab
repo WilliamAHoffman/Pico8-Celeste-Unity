@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1112466028718767233}
   - component: {fileID: 1580499192860606165}
   - component: {fileID: 6011679923720611154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FadingBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a345d27ef0f59344d95914d498b1a9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadingBlock
+  spring: {fileID: 0}
 --- !u!61 &6011679923720611154
 BoxCollider2D:
   m_ObjectHideFlags: 0
