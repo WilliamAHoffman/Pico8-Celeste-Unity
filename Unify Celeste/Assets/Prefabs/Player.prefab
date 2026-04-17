@@ -123,7 +123,7 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckDistance: 0.3
   wallCheckDistance: 0.3
-  groundRayOffset: 0.253
+  groundRayOffset: 0.26
   wallRayOffset: 0.4
   onGround: 0
   onWall: 0
