@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class Key : MonoBehaviour
+{
+    private SpriteRenderer sr;
+    private Collider2D cl;
+
+    // this may become a state in PlayerController
+    private bool keyCollected = false;
+
+
+    void Start()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        cl = GetComponent<Collider2D>();
+    }
+    
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        if (c.gameObject.GetComponent<PlayerController>())
+        {
+            sr.enabled = false;
+            cl.enabled = false;
+            keyCollected = true;
+        }
+    }
+}

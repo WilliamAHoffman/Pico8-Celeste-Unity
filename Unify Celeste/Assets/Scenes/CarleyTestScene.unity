@@ -6123,6 +6123,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &304859908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304859902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a8785ade643400d8bbb5c2c56f360b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlyingStrawberry
+  canFly: 0
 --- !u!1001 &433203331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6755,13 +6768,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8296406897748817470, guid: 3aed5c7a5524345ef873a3401ebc9972, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 348873396355298422, guid: 3aed5c7a5524345ef873a3401ebc9972, type: 3}
       insertIndex: -1
       addedObject: {fileID: 304859903}
+    - targetCorrespondingSourceObject: {fileID: 348873396355298422, guid: 3aed5c7a5524345ef873a3401ebc9972, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 304859908}
   m_SourcePrefab: {fileID: 100100000, guid: 3aed5c7a5524345ef873a3401ebc9972, type: 3}
 --- !u!1001 &1154801711
 PrefabInstance:
