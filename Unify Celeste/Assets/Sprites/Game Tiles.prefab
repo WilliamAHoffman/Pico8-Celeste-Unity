@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &-4789443869435603072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5213034840939618222}
-  m_Layer: 0
-  m_Name: 'CrunchBlock (Missing Prefab with guid: e1e9ffb2c140d8344a4a21f7dbb215d4)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5213034840939618222
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -4789443869435603072}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -10.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2734157529278889088}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6308007118458405053
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,8 +30,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5213034840939618222}
+  m_Children: []
   m_Father: {fileID: 2218733301323818244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &7489910569222760721
@@ -2444,29 +2412,29 @@ Tilemap:
   - m_RefCount: 162
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9679819, g: 0.64387393, b: 0.71808743, a: 1}
+    m_Data: {r: 0.7725418, g: 0.35868105, b: 0.39881298, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8436032, g: 0.5788252, b: 0.6220663, a: 1}
+    m_Data: {r: 0.93791133, g: 0.41920647, b: 0.58577704, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9237396, g: 0.5377894, b: 0.62717795, a: 1}
+    m_Data: {r: 0.748638, g: 0.33256897, b: 0.40095887, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.7215852, g: 0.4080367, b: 0.49932638, a: 1}
+    m_Data: {r: 0.8483238, g: 0.44039494, b: 0.4861102, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.78408533, g: 0.46516982, b: 0.46913126, a: 1}
+    m_Data: {r: 0.806828, g: 0.54398054, b: 0.56752294, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8479312, g: 0.36069712, b: 0.45031893, a: 1}
+    m_Data: {r: 0.9690335, g: 0.627038, b: 0.6415004, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.7065929, g: 0.291476, b: 0.38793787, a: 1}
+    m_Data: {r: 0.83590084, g: 0.46876806, b: 0.51161635, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.8872662, g: 0.5662655, b: 0.67316216, a: 1}
+    m_Data: {r: 0.8044007, g: 0.4424796, b: 0.48474863, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.75121146, g: 0.40189588, b: 0.41937056, a: 1}
+    m_Data: {r: 0.9285484, g: 0.62320536, b: 0.6286971, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9395542, g: 0.43741652, b: 0.57736367, a: 1}
+    m_Data: {r: 0.9380302, g: 0.4319504, b: 0.46464506, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.7321698, g: 0.43017003, b: 0.50939655, a: 1}
+    m_Data: {r: 0.9985695, g: 0.5115364, b: 0.5664931, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 0.9949427, g: 0.46730554, b: 0.6250768, a: 1}
+    m_Data: {r: 0.8109474, g: 0.42485377, b: 0.5253752, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}

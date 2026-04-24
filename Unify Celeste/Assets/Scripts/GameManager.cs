@@ -1,30 +1,34 @@
-using System;
+
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+using System.Collections;
+using System;
+
 
 
 
 public class GameManager : MonoBehaviour
 {
 
-    
+
     public static GameManager instance;
     public PlayerController playerController;
     public List<string> levels;
     [SerializeField] AudioClip level_music1;
+    [SerializeField] float levelYBounds;
     public int strawberryCounter = 0;
     AudioSource music_player;
+    private GameObject player;
+    private bool gameActive;
 
     void Awake()
     {
         if (instance)
         {
-            if(instance != this)
+            if (instance != this)
             {
-               Destroy(this); 
+                Destroy(gameObject);
             }
         }
         else
@@ -43,23 +47,53 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log(collision.gameObject);
-        if (collision.gameObject.GetComponent<PlayerController>())
-        {
-            if(levels.Count > 0)
-            {
-                string nextLevel = levels[0];
-                levels.RemoveAt(0);
-                SceneManager.LoadScene(nextLevel);
-            }
-        }
-    }
-
     private void PlaySong(AudioClip song)
     {
         music_player.clip = song;
         music_player.Play();
     }
+
+    void FixedUpdate()
+    {
+        if (player && gameActive)
+        {
+            if (player.transform.position.y <= -levelYBounds)
+            {
+                StartCoroutine("ReloadScene");
+            }
+            else if (player.transform.position.y >= levelYBounds)
+            {
+                if (levels.Count > 0)
+                {
+                    string nextLevel = levels[0];
+                    levels.RemoveAt(0);
+                    SceneManager.LoadScene(nextLevel);
+                }
+            }
+        }
+        else
+        {
+            player = FindFirstObjectByType<PlayerController>().gameObject;
+            gameActive = true;
+        }
+    }
+
+    public void StartReload()
+    {
+        if (!gameActive) return;
+
+        gameActive = false;
+        ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
+        if (shake) shake.Shake();
+
+        StartCoroutine("ReloadScene");
+        player.SetActive(false);
+    }
+
+    IEnumerator ReloadScene()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
 }

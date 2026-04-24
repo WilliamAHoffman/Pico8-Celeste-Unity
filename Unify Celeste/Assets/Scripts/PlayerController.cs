@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,7 +34,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float groundCheckDistance = 0.6f;
     [SerializeField] float wallCheckDistance = 0.6f;
     [SerializeField] float groundRayOffset = 0.4f;    
-    [SerializeField] float wallRayOffset = 0.4f;    
+    //[SerializeField] float wallRayOffset = 0.4f; 
+    [Header("Extra")]
+    [SerializeField] int deadly;   
 
     [Header("States")]
     public bool onGround;
@@ -166,10 +169,13 @@ public class PlayerController : MonoBehaviour
         if (dashPressed && isAbleToDash && !isDashing)
         {
             StartDash();
+            ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
+            if(shake) shake.Shake();
         }
 
         if (isDashing)
         {
+            isAbleToDash = false;
             rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
         }
     }
@@ -279,5 +285,13 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.left * wallCheckDistance);
         Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.right * wallCheckDistance);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == deadly)
+        {
+            GameManager.instance.StartReload();
+        }
     }
 }
