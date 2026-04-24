@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.layer == deadly)
         {
-            GameManager.instance.StartReload();
+            FindFirstObjectByType<GameManager>().StartReload();
         }
     }
 }

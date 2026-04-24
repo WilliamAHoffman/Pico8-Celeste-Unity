@@ -8,12 +8,12 @@ public class ScreenShake : MonoBehaviour
     public float defaultMagnitude = 0.15f;
     public AnimationCurve falloff = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
-    private Vector3 originalLocalPos;
+    private Vector3 originalPos;
     private Coroutine shakeRoutine;
 
-    void Awake()
+    void Start()
     {
-        originalLocalPos = transform.localPosition;
+        originalPos = transform.localPosition;
     }
 
     public void Shake()
@@ -31,8 +31,6 @@ public class ScreenShake : MonoBehaviour
 
     private IEnumerator DoShake(float duration, float magnitude)
     {
-        originalLocalPos = transform.localPosition;
-
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -42,12 +40,12 @@ public class ScreenShake : MonoBehaviour
             float strength = falloff.Evaluate(t) * magnitude;
 
             Vector2 offset = Random.insideUnitCircle * strength;
-            transform.localPosition = originalLocalPos + new Vector3(offset.x, offset.y, 0f);
+            transform.position = originalPos + new Vector3(offset.x, offset.y, 0f);
 
             yield return null;
         }
 
-        transform.localPosition = originalLocalPos;
+        transform.localPosition = originalPos;
         shakeRoutine = null;
     }
 }

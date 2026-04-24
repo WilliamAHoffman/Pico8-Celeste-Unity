@@ -1,56 +1,25 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
-
-
-
+using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {
-
-
-    public static GameManager instance;
-    public PlayerController playerController;
-    public List<string> levels;
-    [SerializeField] AudioClip level_music1;
+    [SerializeField] Vector2 spawnLocation;
+    [SerializeField] AudioClip level_music;
     [SerializeField] float levelYBounds;
-    public int strawberryCounter = 0;
-    AudioSource music_player;
+    [SerializeField] string nextLevel;
+    [SerializeField] GameObject levelStoragePrefab;
+    public GameObject playerPrefab;
     private GameObject player;
     private bool gameActive;
 
-    void Awake()
-    {
-        if (instance)
-        {
-            if (instance != this)
-            {
-                Destroy(gameObject);
-            }
-        }
-        else
-        {
-            instance = this;
-        }
-        DontDestroyOnLoad(gameObject);
-        music_player = GetComponent<AudioSource>();
-    }
-
     private void Start()
     {
-        if (!music_player.isPlaying)
-        {
-            PlaySong(level_music1);
-        }
-    }
-
-    private void PlaySong(AudioClip song)
-    {
-        music_player.clip = song;
-        music_player.Play();
+        ResetRoom();
+        if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
+        if(level_music) LevelStorage.instance.PlaySong(level_music);
     }
 
     void FixedUpdate()
@@ -63,19 +32,17 @@ public class GameManager : MonoBehaviour
             }
             else if (player.transform.position.y >= levelYBounds)
             {
-                if (levels.Count > 0)
-                {
-                    string nextLevel = levels[0];
-                    levels.RemoveAt(0);
-                    SceneManager.LoadScene(nextLevel);
-                }
+                SceneManager.LoadScene(nextLevel);
             }
         }
-        else
-        {
-            player = FindFirstObjectByType<PlayerController>().gameObject;
-            gameActive = true;
-        }
+    }
+
+    void ResetRoom()
+    {
+        if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        player.transform.position = spawnLocation;
+        player.SetActive(true);
+        gameActive = true;
     }
 
     public void StartReload()
@@ -93,7 +60,7 @@ public class GameManager : MonoBehaviour
     IEnumerator ReloadScene()
     {
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        ResetRoom();
     }
 
 }

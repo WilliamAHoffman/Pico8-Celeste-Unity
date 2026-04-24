@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5676364888985867286}
   - component: {fileID: 318777904983497361}
   - component: {fileID: 3534715399119492862}
-  - component: {fileID: 2061995021980153186}
   - component: {fileID: 4385951240813743476}
   m_Layer: 0
   m_Name: Player
@@ -109,11 +108,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 6
-  jump: 6
-  wallJumpTime: 0.22
+  jump: 7
+  wallJumpTime: 0.27
   wallSpeed: 1.3
-  dashingVelocity: 8
-  dashingTime: 0.1
+  dashingVelocity: 9
+  dashingTime: 0.15
   isAbleToDash: 1
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveInput: {x: 0, y: 0}
@@ -343,18 +342,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &2061995021980153186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9195205372267865232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04e8a014ac1ec4829998564bc600dc97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Death
 --- !u!66 &4385951240813743476
 CompositeCollider2D:
   m_ObjectHideFlags: 0

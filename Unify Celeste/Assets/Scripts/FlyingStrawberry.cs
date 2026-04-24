@@ -37,7 +37,7 @@ public class FlyingStrawberry : MonoBehaviour
         {
             sr.enabled = false;
             cl.enabled = false;
-            GameManager.instance.strawberryCounter++;
+            if(LevelStorage.instance) LevelStorage.instance.totalStrawberries++;
         }
     }
 
