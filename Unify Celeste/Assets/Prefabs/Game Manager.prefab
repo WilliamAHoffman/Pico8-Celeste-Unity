@@ -50,6 +50,7 @@ MonoBehaviour:
   levelYBounds: 9
   nextLevel: Level 2
   levelStoragePrefab: {fileID: 3244259747248697520, guid: b0086a6ffff2f144784ef878ade72dc2, type: 3}
+  playerUpSpeed: 7
   playerPrefab: {fileID: 9195205372267865232, guid: d117bf28e80dd594d996e17032e8d766, type: 3}
 --- !u!1001 &7232689647556647637
 PrefabInstance:
