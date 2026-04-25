@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         {
             if (player.transform.position.y <= -levelYBounds)
             {
-                StartCoroutine("ReloadScene");
+                StartCoroutine("StartReload");
             }
             else if (player.transform.position.y >= levelYBounds)
             {
@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
     {
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
         player.transform.position = spawnLocation;
-        player.SetActive(true);
         gameActive = true;
+        player.SetActive(true);
     }
 
     public void StartReload()
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     IEnumerator ReloadScene()
     {
         yield return new WaitForSeconds(1f);
+        Debug.Log("reset");
         ResetRoom();
     }
 
