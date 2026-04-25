@@ -11,13 +11,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] float levelYBounds;
     [SerializeField] string nextLevel;
     [SerializeField] GameObject levelStoragePrefab;
+    [SerializeField] float playerUpSpeed;
     public GameObject playerPrefab;
     private GameObject player;
+    private bool firstTime;
+    private bool playerMoveUp;
     private bool gameActive;
 
     private void Start()
     {
-        ResetRoom();
+        firstTime = true;
+        gameActive = true;
+        StartReload();
         if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
         if(level_music) LevelStorage.instance.PlaySong(level_music);
     }
@@ -35,14 +40,23 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(nextLevel);
             }
         }
+
+        if (playerMoveUp)
+        {
+            float newY = player.transform.position.y + Time.deltaTime * playerUpSpeed;
+            player.transform.position = new Vector3(spawnLocation.x, newY, 0);
+            if(newY >= spawnLocation.y + 0.5)
+            {
+                ResetRoom();
+            }
+        }
     }
 
     void ResetRoom()
     {
-        if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
-        player.transform.position = spawnLocation;
         gameActive = true;
-        player.SetActive(true);
+        playerMoveUp = false;
+        AllowMovement(true);
     }
 
     public void StartReload()
@@ -50,18 +64,21 @@ public class GameManager : MonoBehaviour
         if (!gameActive) return;
 
         gameActive = false;
+
+        if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        AllowMovement(false);
+        player.transform.position = new Vector3(spawnLocation.x,-9);
+        playerMoveUp = true;
+
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
-        if (shake) shake.Shake();
-
-        StartCoroutine("ReloadScene");
-        player.SetActive(false);
+        if (shake && !firstTime) shake.Shake();
+        firstTime = false;
     }
 
-    IEnumerator ReloadScene()
+    private void AllowMovement(bool state)
     {
-        yield return new WaitForSeconds(1f);
-        Debug.Log("reset");
-        ResetRoom();
+        player.GetComponent<PlayerController>().enabled = state;
+        player.GetComponent<Rigidbody2D>().simulated = state;
+        player.GetComponent<Collider2D>().enabled = state;
     }
-
 }

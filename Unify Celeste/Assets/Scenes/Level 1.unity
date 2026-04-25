@@ -11413,6 +11413,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6764597685878330069, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: orthographic size
+      value: 7.818182
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: playerUpSpeed
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
