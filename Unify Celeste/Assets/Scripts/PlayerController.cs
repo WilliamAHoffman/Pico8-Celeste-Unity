@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public bool crouching;
     public bool lookingUp;
     public bool wallJumping;
+    public bool faceRight;
 
     private Rigidbody2D rb;
     private TrailRenderer tr;
@@ -107,6 +109,14 @@ public class PlayerController : MonoBehaviour
         if (!wallCling)
         {
             rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+            if(moveInput.x > 0)
+            {
+                faceRight = true;
+            }
+            if(moveInput.x < 0)
+            {
+                faceRight = false;
+            }
         }
     }
 
@@ -176,6 +186,14 @@ public class PlayerController : MonoBehaviour
         if (isDashing)
         {
             isAbleToDash = false;
+            if(dashingDirection.x > 0)
+            {
+                faceRight = true;
+            }
+            if(dashingDirection.x < 0)
+            {
+                faceRight = false;
+            }
             rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
         }
     }
