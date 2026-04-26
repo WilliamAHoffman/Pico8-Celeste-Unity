@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         gameActive = false;
 
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        player.GetComponent<PlayerController>().faceRight = true;
         AllowMovement(false);
         player.transform.position = new Vector3(spawnLocation.x,-9);
         playerMoveUp = true;
