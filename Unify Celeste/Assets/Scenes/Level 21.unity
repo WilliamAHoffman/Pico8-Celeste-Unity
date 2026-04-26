@@ -8449,10 +8449,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6764597685878330069, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: orthographic size
+      value: 8.984848
+      objectReference: {fileID: 0}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: nextLevel
       value: Level 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: level_music
+      value: 
+      objectReference: {fileID: 8300000, guid: 0a3f8047920693c47a157a582264deca, type: 3}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: spawnLocation.y
       value: -6
