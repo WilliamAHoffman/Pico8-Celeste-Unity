@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private TrailRenderer tr;
+    private Animator animator;
+    private SpriteRenderer sr;
 
     void Awake()
     {
@@ -60,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
         inputActions["Jump"].started += ctx => jumpPressed = true;
         inputActions["Dash"].started += ctx => dashPressed = true;
+        animator = GetComponent<Animator>();
+
     }
 
     void OnEnable() => inputActions.Enable();
@@ -69,6 +73,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
+        sr= GetComponent<SpriteRenderer>();
+       
     }
 
     void FixedUpdate()
@@ -86,6 +92,8 @@ public class PlayerController : MonoBehaviour
         dashPressed = false;
 
         if (onGround) isAbleToDash = true;
+        sr.flipX = !faceRight; //makes the player face in the direction they are going
+
     }
 
     void CheckCling()
@@ -117,7 +125,15 @@ public class PlayerController : MonoBehaviour
             {
                 faceRight = false;
             }
+            if (moveInput.x == 0)
+            {
+                animator.SetBool("moving", false);
+            }else
+            {
+                animator.SetBool("moving", true);
+            }
         }
+        animator.SetBool("wallHold", wallCling);
     }
 
     void JumpCheck()
@@ -150,8 +166,11 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        
+        animator.SetBool("onGround", false);
         if (onGround)
         {
+            animator.Play("jump/fall");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
         }
         else if (wallCling)
@@ -163,6 +182,7 @@ public class PlayerController : MonoBehaviour
     void WallJump()
     {
         wallCling = false;
+        animator.SetBool("wallHold", false);
         rb.linearVelocity = new Vector2(-wallDirection * jump, jump);
         wallJumping = true;
         StartCoroutine(StopWallJumping());
@@ -181,6 +201,7 @@ public class PlayerController : MonoBehaviour
             StartDash();
             ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
             if(shake) shake.Shake();
+            
         }
 
         if (isDashing)
@@ -203,6 +224,8 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         isAbleToDash = false;
         tr.emitting = true;
+        animator.SetBool("onGround", false);
+        animator.Play("Dash");
 
         dashingDirection = moveInput;
 
@@ -231,6 +254,11 @@ public class PlayerController : MonoBehaviour
         }
         lookingUp = onGround && moveInput.y > 0.5f;
         crouching = onGround && moveInput.y < -0.5f;
+
+        animator.SetBool("crouching", crouching);
+        animator.SetBool("lookingUp", lookingUp);
+
+
     }
 
     void CheckGround()
@@ -241,6 +269,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
 
         onGround = left.collider != null || right.collider != null;
+        animator.SetBool("onGround", onGround);
     }
 
     void CheckWall()
@@ -283,6 +312,13 @@ public class PlayerController : MonoBehaviour
             onWall = false;
             wallDirection = 0;
         }
+    }
+
+    public void ReloadPlayer()
+    {
+        animator.Play("jump/fall");
+        animator.SetBool("onGround", false);
+        faceRight = true;
     }
 
     void OnDrawGizmos()
