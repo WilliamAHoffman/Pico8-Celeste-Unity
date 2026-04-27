@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer tr;
     private Animator animator;
     private SpriteRenderer sr;
+    private AudioSource ap;
 
     void Awake()
     {
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviour
         inputActions["Jump"].started += ctx => jumpPressed = true;
         inputActions["Dash"].started += ctx => dashPressed = true;
         animator = GetComponent<Animator>();
+        
 
     }
 
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
         sr= GetComponent<SpriteRenderer>();
+        ap=GetComponent<AudioSource>();
        
     }
 
@@ -170,7 +173,8 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("onGround", false);
         if (onGround)
         {
-            animator.Play("jump/fall");
+            animator.Play("jump/fall"); 
+            ap.PlayOneShot(Resources.Load<AudioClip>("Jump"));
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
         }
         else if (wallCling)
@@ -183,6 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         wallCling = false;
         animator.SetBool("wallHold", false);
+        ap.PlayOneShot(Resources.Load<AudioClip>("WallJump"));
         rb.linearVelocity = new Vector2(-wallDirection * jump, jump);
         wallJumping = true;
         StartCoroutine(StopWallJumping());
@@ -222,6 +227,7 @@ public class PlayerController : MonoBehaviour
     void StartDash()
     {
         isDashing = true;
+        ap.PlayOneShot(Resources.Load<AudioClip>("Dash"));
         isAbleToDash = false;
         tr.emitting = true;
         animator.SetBool("onGround", false);
