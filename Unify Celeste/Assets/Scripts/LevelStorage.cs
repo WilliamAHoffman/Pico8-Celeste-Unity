@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class LevelStorage : MonoBehaviour
 {
@@ -30,7 +31,13 @@ public class LevelStorage : MonoBehaviour
         {
             currSong = newSong;
             audioSource.Stop();
-            audioSource.PlayOneShot(currSong);
+
+            //audioSource.PlayOneShot(currSong);
+            audioSource.volume = .7f;
+            audioSource.clip = currSong;
+            audioSource.Play();
+            audioSource.loop = true;
+            
 
         }
     }
