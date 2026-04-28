@@ -34,8 +34,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckDistance = 0.6f;
     [SerializeField] float wallCheckDistance = 0.6f;
-    [SerializeField] float groundRayOffset = 0.4f;    
-    //[SerializeField] float wallRayOffset = 0.4f; 
+    [SerializeField] float groundRayOffset = 0.4f;
+    [SerializeField] float bottomWallRayOffset = 0.4f;
+    [SerializeField] float topWallRayOffset = 0.4f;        
+
     [Header("Extra")]
     [SerializeField] int deadly;   
 
@@ -287,20 +289,20 @@ public class PlayerController : MonoBehaviour
 
         if (!leftWall)
         {
-            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.down * groundRayOffset, wallCheckDistance, groundLayer);
+            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.down * bottomWallRayOffset, wallCheckDistance, groundLayer);
         }
         if (!leftWall)
         {
-            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.up * groundRayOffset, wallCheckDistance, groundLayer);
+            leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.up * topWallRayOffset, wallCheckDistance, groundLayer);
         }
 
         if (!rightWall)
         {
-            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.down * groundRayOffset, wallCheckDistance, groundLayer);
+            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.down * bottomWallRayOffset, wallCheckDistance, groundLayer);
         }
         if (!rightWall)
         {
-            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.up * groundRayOffset, wallCheckDistance, groundLayer);
+            rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.up * topWallRayOffset, wallCheckDistance, groundLayer);
         }
 
         if (leftWall.collider != null)
@@ -340,11 +342,11 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(pos, pos + Vector2.left * wallCheckDistance);
         Gizmos.DrawLine(pos, pos + Vector2.right * wallCheckDistance);
 
-        Gizmos.DrawLine(pos + Vector2.up * groundRayOffset, pos + Vector2.up * groundRayOffset + Vector2.left * wallCheckDistance);
-        Gizmos.DrawLine(pos + Vector2.up * groundRayOffset, pos + Vector2.up * groundRayOffset + Vector2.right * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.up * topWallRayOffset, pos + Vector2.up * topWallRayOffset + Vector2.left * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.up * topWallRayOffset, pos + Vector2.up * topWallRayOffset + Vector2.right * wallCheckDistance);
 
-        Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.left * wallCheckDistance);
-        Gizmos.DrawLine(pos + Vector2.down * groundRayOffset, pos + Vector2.down * groundRayOffset + Vector2.right * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.down * bottomWallRayOffset, pos + Vector2.down * bottomWallRayOffset + Vector2.left * wallCheckDistance);
+        Gizmos.DrawLine(pos + Vector2.down * bottomWallRayOffset, pos + Vector2.down * bottomWallRayOffset + Vector2.right * wallCheckDistance);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

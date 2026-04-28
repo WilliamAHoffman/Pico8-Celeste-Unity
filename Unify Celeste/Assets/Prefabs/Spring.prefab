@@ -153,3 +153,4 @@ MonoBehaviour:
   fade_block: {fileID: 0}
   pressed_sprite: {fileID: -7883866192385575364, guid: 08556dd3a143f2240911f7543b3794d7, type: 3}
   normal_sprite: {fileID: -8942817527115040722, guid: 08556dd3a143f2240911f7543b3794d7, type: 3}
+  strength: 10
