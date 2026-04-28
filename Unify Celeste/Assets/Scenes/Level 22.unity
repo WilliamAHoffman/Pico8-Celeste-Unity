@@ -234,15 +234,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: nextLevel
-      value: Level 3
+      value: Level 23
       objectReference: {fileID: 0}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: level_music
       value: 
       objectReference: {fileID: 8300000, guid: 244edd8e600cfe348b2fcb67cc71c3da, type: 3}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: spawnLocation.x
+      value: -5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: spawnLocation.y
-      value: -6
+      value: -5.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
