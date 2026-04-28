@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5983954679580186329}
   - component: {fileID: 3746546177120422018}
   - component: {fileID: 7811133968380818622}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cloud
-  m_TagString: Untagged
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1744470932386146862}
   - component: {fileID: 6056202756903429964}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CloudSpriteOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3602387241181348712}
   - component: {fileID: 5336795984326365014}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CloudSpriteOne (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
