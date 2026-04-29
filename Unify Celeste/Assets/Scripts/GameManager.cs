@@ -6,7 +6,7 @@ using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] Vector2 spawnLocation;
+    [SerializeField] Transform spawnLocation;
     [SerializeField] AudioClip level_music;
     [SerializeField] float levelYBounds;
     [SerializeField] string nextLevel;
@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
         if (playerMoveUp)
         {
             float newY = player.transform.position.y + Time.deltaTime * playerUpSpeed;
-            player.transform.position = new Vector3(spawnLocation.x, newY, 0);
-            if(newY >= spawnLocation.y + 0.5)
+            player.transform.position = new Vector3(spawnLocation.position.x, newY, 0);
+            if(newY >= spawnLocation.position.y)
             {
                 ResetRoom();
             }
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
         player.GetComponent<PlayerController>().ReloadPlayer();
         AllowMovement(false);
-        player.transform.position = new Vector3(spawnLocation.x,-9);
+        player.transform.position = new Vector3(spawnLocation.position.x,-9);
         playerMoveUp = true;
 
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();

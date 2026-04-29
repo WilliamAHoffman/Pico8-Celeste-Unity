@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnThing()
     {
+        if(!spawned) return;
         Instantiate(spawned, transform.position, Quaternion.identity);
     }
 }

@@ -213,7 +213,6 @@ public class PlayerController : MonoBehaviour
 
         if (isDashing)
         {
-            isAbleToDash = false;
             if(dashingDirection.x > 0)
             {
                 faceRight = true;
