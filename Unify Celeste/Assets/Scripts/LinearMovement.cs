@@ -3,16 +3,36 @@ using UnityEngine;
 
 public class LinearMovement : MonoBehaviour
 {
-    [SerializeField] float xSpeed;
-    [SerializeField] float ySpeed;
+    public float xSpeed;
+    public float ySpeed;
     [SerializeField] float deathX;
+    [SerializeField] float deathY;
+    [SerializeField] bool reload;
+    [SerializeField] float waitTime = 2;
+    private float waitTimer = -1;
 
     void FixedUpdate()
     {
-        if(math.abs(transform.position.x) >= deathX)
+        transform.position += new Vector3(xSpeed * Time.deltaTime, ySpeed * Time.deltaTime, 0);
+
+        if (waitTimer >= 0)
         {
-            Destroy(gameObject);
+            waitTimer -= Time.deltaTime;
         }
-        transform.position += new Vector3(xSpeed * Time.deltaTime,ySpeed * Time.deltaTime,0);
+        if (math.abs(transform.position.x) >= deathX || math.abs(transform.position.y) >= deathY)
+        {
+            if (waitTimer < 0)
+            {
+                if (reload)
+                {
+                    waitTimer = waitTime;
+                    transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 }
