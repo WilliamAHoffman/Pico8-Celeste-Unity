@@ -113,9 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e0844bbff7dd847a2ef164e611289c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LinearMovement
-  xSpeed: 5
+  xSpeed: 3
   ySpeed: 0
-  deathX: 15
+  deathX: 10.5
   deathY: 30
   reload: 1
   waitTime: 2

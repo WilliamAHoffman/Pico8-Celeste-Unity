@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 2325497674638388740}
   - component: {fileID: 5235063465355552767}
   - component: {fileID: 4319279528917451244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ice
   m_TagString: Ice
   m_Icon: {fileID: 0}
