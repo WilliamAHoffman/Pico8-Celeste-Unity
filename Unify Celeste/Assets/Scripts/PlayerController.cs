@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool wallJumping;
     public bool faceRight;
 
+
     private Rigidbody2D rb;
     private TrailRenderer tr;
     private Animator animator;
@@ -66,7 +67,8 @@ public class PlayerController : MonoBehaviour
         inputActions["Jump"].started += ctx => jumpPressed = true;
         inputActions["Dash"].started += ctx => dashPressed = true;
         animator = GetComponent<Animator>();
-        
+        ap = GetComponent<AudioSource>();
+
 
     }
 
@@ -78,7 +80,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
         sr= GetComponent<SpriteRenderer>();
-        ap=GetComponent<AudioSource>();
+        
        
     }
 
@@ -89,6 +91,7 @@ public class PlayerController : MonoBehaviour
         CheckCling();
 
         HorizontalCheck();
+        VerticalCheck();
         JumpCheck();
         LookCheck();
         DashCheck();
@@ -96,11 +99,28 @@ public class PlayerController : MonoBehaviour
         jumpPressed = false;
         dashPressed = false;
 
-        if (onGround) isAbleToDash = true;
+        if (onGround && !isAbleToDash)
+        {
+            ap.PlayOneShot(Resources.Load<AudioClip>("RegainDash"));
+            isAbleToDash = true;
+          
+        }
         sr.flipX = !faceRight; //makes the player face in the direction they are going
 
     }
 
+    void VerticalCheck()
+    {
+        if (rb.linearVelocity.y != 0)
+        {
+            animator.SetBool("vertMovement", true);
+        }
+        else
+        {
+            animator.SetBool("vertMovement", false);
+
+        }
+    }
     void CheckCling()
     {
         if (wallCling)
@@ -352,6 +372,9 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.layer == deadly)
         {
+            ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
+
+            //there should be a delay here and a chance for the particle anim on death to play
             FindFirstObjectByType<GameManager>().StartReload();
         }
     }

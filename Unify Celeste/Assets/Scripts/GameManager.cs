@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] Transform spawnLocation;
     [SerializeField] AudioClip level_music;
+
+    
     [SerializeField] float levelYBounds;
     [SerializeField] string nextLevel;
     [SerializeField] GameObject levelStoragePrefab;
@@ -17,11 +19,12 @@ public class GameManager : MonoBehaviour
     private bool firstTime;
     private bool playerMoveUp;
     private bool gameActive;
-
+    AudioSource audioSource;
     private void Start()
     {
         firstTime = true;
         gameActive = true;
+        audioSource = GetComponent<AudioSource>();
         StartReload();
         if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
         if(level_music) LevelStorage.instance.PlaySong(level_music);
@@ -74,6 +77,7 @@ public class GameManager : MonoBehaviour
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
         if (shake && !firstTime) shake.Shake();
         firstTime = false;
+        audioSource.PlayOneShot(Resources.Load<AudioClip>("StartLevel"));
     }
 
     private void AllowMovement(bool state)

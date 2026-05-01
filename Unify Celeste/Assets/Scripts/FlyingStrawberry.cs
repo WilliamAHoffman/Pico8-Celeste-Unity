@@ -7,6 +7,15 @@ public class FlyingStrawberry : MonoBehaviour
     private PlayerController player;
     private bool flying = false;
 
+    AudioSource audioSource;
+
+
+    private void Start()
+    {
+        
+        audioSource = GetComponent<AudioSource>();
+        
+    }
     void Update()
     {
         if (!player)
@@ -25,7 +34,8 @@ public class FlyingStrawberry : MonoBehaviour
         if (c.gameObject.GetComponent<PlayerController>())
         {
             if(LevelStorage.instance) LevelStorage.instance.totalStrawberries++;
-            c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
+            if (LevelStorage.instance) LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("CollectStrawberry"));
+            //c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
             Destroy(gameObject);
         }
     }
