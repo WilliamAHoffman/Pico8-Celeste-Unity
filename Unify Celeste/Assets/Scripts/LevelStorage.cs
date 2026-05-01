@@ -42,4 +42,8 @@ public class LevelStorage : MonoBehaviour
         }
     }
 
+    public void PlaySFX(AudioClip s)
+    {
+        audioSource.PlayOneShot(s);
+    }
 }
