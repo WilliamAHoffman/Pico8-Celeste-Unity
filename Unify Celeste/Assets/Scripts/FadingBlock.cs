@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class FadingBlock : MonoBehaviour
 {
 
      Animator anim;
     [SerializeField] GameObject spring;
+
+    AudioSource audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         anim= GetComponent<Animator>();
+        audioSource= GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -20,6 +24,7 @@ public class FadingBlock : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         anim.Play("FadingBlockAnim");
+        audioSource.PlayOneShot(Resources.Load<AudioClip>("FadeBlock"));
     }
 
     public void Fade()
@@ -37,6 +42,7 @@ public class FadingBlock : MonoBehaviour
         
         gameObject.SetActive(true);
         anim.Play("Idle");
+        audioSource.PlayOneShot(Resources.Load<AudioClip>("FadeBlockRegen"), .5f);
         if (spring != null)
         { 
             spring.GetComponent<Spring>().ResetSpring();

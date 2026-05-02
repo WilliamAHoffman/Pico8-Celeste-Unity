@@ -8,12 +8,14 @@ public class Spring : MonoBehaviour
     [SerializeField] GameObject fade_block;
     [SerializeField] Sprite pressed_sprite;
     [SerializeField] Sprite normal_sprite;
-   
+    [SerializeField] float strength;
+
+    AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -24,21 +26,24 @@ public class Spring : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>() != null&& active)
+        if (collision.gameObject.GetComponent<PlayerController>() && active)
         {
+            Rigidbody2D playerRB = collision.gameObject.GetComponent<Rigidbody2D>();
             //launch the player up here
 
-
+            playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x, strength);
             active = false;
             GetComponent<SpriteRenderer>().sprite = pressed_sprite;
             if (fade_block != null)
             {
                 fade_block.GetComponent<Animator>().Play("FadingBlockAnim");
-
+                Invoke("ResetSpring", .25f);
+                Invoke("SpringNoise", .2f);
             }
             else
             {
-                Invoke("ResetSpring", .5f);
+                Invoke("ResetSpring", .25f);
+                Invoke("SpringNoise", .2f);
             }
         }
     }
@@ -47,7 +52,13 @@ public class Spring : MonoBehaviour
     {
         gameObject.SetActive(true);
         active = true;
+        
         GetComponent <SpriteRenderer>().sprite = normal_sprite;
         
+    }
+
+    public void SpringNoise()
+    {
+        audioSource.PlayOneShot(Resources.Load<AudioClip>("Spring"));
     }
 }

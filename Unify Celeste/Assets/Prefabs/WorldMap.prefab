@@ -418,7 +418,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 2325497674638388740}
   - component: {fileID: 5235063465355552767}
   - component: {fileID: 4319279528917451244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ice
   m_TagString: Ice
   m_Icon: {fileID: 0}
@@ -1596,6 +1596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7231845060464256009}
+  - component: {fileID: 2713199865021738516}
   m_Layer: 6
   m_Name: Other
   m_TagString: Untagged
@@ -1618,3 +1619,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6082304904609697036}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1839735485 &2713199865021738516
+Tilemap:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010069311701723866}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
+  m_TileObjectToInstantiateArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileOrientation: 0
+  m_TileOrientationMatrix:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1

@@ -6,8 +6,10 @@ using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] Vector2 spawnLocation;
+    [SerializeField] Transform spawnLocation;
     [SerializeField] AudioClip level_music;
+
+    
     [SerializeField] float levelYBounds;
     [SerializeField] string nextLevel;
     [SerializeField] GameObject levelStoragePrefab;
@@ -17,11 +19,12 @@ public class GameManager : MonoBehaviour
     private bool firstTime;
     private bool playerMoveUp;
     private bool gameActive;
-
+    AudioSource audioSource;
     private void Start()
     {
         firstTime = true;
         gameActive = true;
+        audioSource = GetComponent<AudioSource>();
         StartReload();
         if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
         if(level_music) LevelStorage.instance.PlaySong(level_music);
@@ -44,8 +47,8 @@ public class GameManager : MonoBehaviour
         if (playerMoveUp)
         {
             float newY = player.transform.position.y + Time.deltaTime * playerUpSpeed;
-            player.transform.position = new Vector3(spawnLocation.x, newY, 0);
-            if(newY >= spawnLocation.y + 0.5)
+            player.transform.position = new Vector3(spawnLocation.position.x, newY, 0);
+            if(newY >= spawnLocation.position.y)
             {
                 ResetRoom();
             }
@@ -66,14 +69,15 @@ public class GameManager : MonoBehaviour
         gameActive = false;
 
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
-        player.GetComponent<PlayerController>().faceRight = true;
+        player.GetComponent<PlayerController>().ReloadPlayer();
         AllowMovement(false);
-        player.transform.position = new Vector3(spawnLocation.x,-9);
+        player.transform.position = new Vector3(spawnLocation.position.x,-9);
         playerMoveUp = true;
 
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
         if (shake && !firstTime) shake.Shake();
         firstTime = false;
+        audioSource.PlayOneShot(Resources.Load<AudioClip>("StartLevel"));
     }
 
     private void AllowMovement(bool state)

@@ -8,6 +8,7 @@ TagManager:
   - Spikes
   - Strawberry
   - Ice
+  - Cloud
   layers:
   - Default
   - TransparentFX

@@ -3,49 +3,40 @@ using UnityEngine;
 
 public class FlyingStrawberry : MonoBehaviour
 {
-    private SpriteRenderer sr;
-    private Collider2D cl;
-
-    private Rigidbody2D rb;
-
+    [SerializeField] float speed;
     private PlayerController player;
-    public bool canFly = false;
+    private bool flying = false;
 
-    // does not regenerate on scene reload upon death
+    AudioSource audioSource;
 
-    void Start()
+
+    private void Start()
     {
-        player = FindFirstObjectByType<PlayerController>();
-        sr = GetComponent<SpriteRenderer>();
-        cl = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        
+        audioSource = GetComponent<AudioSource>();
+        
     }
-
     void Update()
     {
-        if (!canFly && player.isDashing)
+        if (!player)
         {
-            canFly = true;
+            player = FindFirstObjectByType<PlayerController>();
         }
-
-        Flying();
+        else if (player.isDashing && !flying)
+        {
+            flying = true;
+            GetComponent<LinearMovement>().ySpeed = speed;
+        }
     }
         
     private void OnTriggerEnter2D(Collider2D c)
     {
         if (c.gameObject.GetComponent<PlayerController>())
         {
-            sr.enabled = false;
-            cl.enabled = false;
             if(LevelStorage.instance) LevelStorage.instance.totalStrawberries++;
-        }
-    }
-
-    private void Flying()
-    {
-        if (canFly)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f);
+            if (LevelStorage.instance) LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("CollectStrawberry"));
+            //c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
+            Destroy(gameObject);
         }
     }
 }
