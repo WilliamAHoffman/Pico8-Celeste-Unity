@@ -23,34 +23,24 @@ public class Intro : MonoBehaviour
     [SerializeField] Color c4;
 
     [SerializeField] Color clear;
-
-
     float dur = .2f;
- 
-  
-
     AudioSource ap;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        inputActions["Jump"].started += ctx => StartGame();
+        inputActions["Dash"].started += ctx => StartGame();
+    }
+
+    void OnEnable() => inputActions.Enable();
+    void OnDisable() => inputActions.Disable();
     void Start()
     {
         ap= GetComponent<AudioSource>();
         ap.clip = introMusic;
         ap.Play();
-        Invoke("StartGame", 3);
-       
         
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
-        {
-            StartGame();
-        }
-
-    }
-
 
     void StartGame()
     {
@@ -58,9 +48,6 @@ public class Intro : MonoBehaviour
         ap.Play();
         ap.loop = false;
         StartCoroutine("FlashColors");
-     
-
-
     }
 
 

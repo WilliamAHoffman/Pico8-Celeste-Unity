@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashingTime = 0.5f;
     private Vector2 dashingDirection;
     public bool isAbleToDash = true;
+    public bool isAbleToDoubleDash = false;
+    public bool unlockedDoubleDash = false;
 
     [Header("Input")]
     [SerializeField] InputActionAsset inputActions;
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("States")]
     public bool onGround;
+    public bool walking;
     public bool onWall;
     public bool wallCling;
     public int wallDirection;
@@ -54,9 +57,6 @@ public class PlayerController : MonoBehaviour
 
 
     private Rigidbody2D rb;
-    private TrailRenderer tr;
-    private Animator animator;
-    private SpriteRenderer sr;
     private AudioSource ap;
 
     void Awake()
@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour
 
         inputActions["Jump"].started += ctx => jumpPressed = true;
         inputActions["Dash"].started += ctx => dashPressed = true;
-        animator = GetComponent<Animator>();
         ap = GetComponent<AudioSource>();
 
 
@@ -78,10 +77,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        tr = GetComponent<TrailRenderer>();
-        sr= GetComponent<SpriteRenderer>();
-        
-       
     }
 
     void FixedUpdate()
@@ -91,7 +86,6 @@ public class PlayerController : MonoBehaviour
         CheckCling();
 
         HorizontalCheck();
-        VerticalCheck();
         JumpCheck();
         LookCheck();
         DashCheck();
@@ -99,26 +93,10 @@ public class PlayerController : MonoBehaviour
         jumpPressed = false;
         dashPressed = false;
 
-        if (onGround && !isAbleToDash)
+        if (onGround && !isAbleToDash && !isDashing)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("RegainDash"));
             isAbleToDash = true;
-          
-        }
-        sr.flipX = !faceRight; //makes the player face in the direction they are going
-
-    }
-
-    void VerticalCheck()
-    {
-        if (rb.linearVelocity.y != 0)
-        {
-            animator.SetBool("vertMovement", true);
-        }
-        else
-        {
-            animator.SetBool("vertMovement", false);
-
         }
     }
     void CheckCling()
@@ -152,13 +130,12 @@ public class PlayerController : MonoBehaviour
             }
             if (moveInput.x == 0)
             {
-                animator.SetBool("moving", false);
+                walking = false;
             }else
             {
-                animator.SetBool("moving", true);
+                walking = true;
             }
         }
-        animator.SetBool("wallHold", wallCling);
     }
 
     void JumpCheck()
@@ -191,11 +168,8 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        
-        animator.SetBool("onGround", false);
         if (onGround)
         {
-            animator.Play("jump/fall"); 
             ap.PlayOneShot(Resources.Load<AudioClip>("Jump"));
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump);
         }
@@ -208,7 +182,6 @@ public class PlayerController : MonoBehaviour
     void WallJump()
     {
         wallCling = false;
-        animator.SetBool("wallHold", false);
         ap.PlayOneShot(Resources.Load<AudioClip>("WallJump"));
         rb.linearVelocity = new Vector2(-wallDirection * jump, jump);
         wallJumping = true;
@@ -250,9 +223,6 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         ap.PlayOneShot(Resources.Load<AudioClip>("Dash"));
         isAbleToDash = false;
-        tr.emitting = true;
-        animator.SetBool("onGround", false);
-        animator.Play("Dash");
 
         dashingDirection = moveInput;
 
@@ -268,7 +238,6 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(dashingTime);
         isDashing = false;
-        tr.emitting = false;
     }
 
     void LookCheck()
@@ -281,11 +250,6 @@ public class PlayerController : MonoBehaviour
         }
         lookingUp = onGround && moveInput.y > 0.5f;
         crouching = onGround && moveInput.y < -0.5f;
-
-        animator.SetBool("crouching", crouching);
-        animator.SetBool("lookingUp", lookingUp);
-
-
     }
 
     void CheckGround()
@@ -296,7 +260,6 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
 
         onGround = left.collider != null || right.collider != null;
-        animator.SetBool("onGround", onGround);
     }
 
     void CheckWall()
@@ -343,9 +306,9 @@ public class PlayerController : MonoBehaviour
 
     public void ReloadPlayer()
     {
-        animator.Play("jump/fall");
-        animator.SetBool("onGround", false);
         faceRight = true;
+        isDashing = false;
+        onGround = true;
     }
 
     void OnDrawGizmos()
