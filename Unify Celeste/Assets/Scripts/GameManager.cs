@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using Unity.Mathematics;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     private bool playerMoveUp;
     private bool gameActive;
     AudioSource audioSource;
+
     private void Start()
     {
         firstTime = true;
@@ -77,6 +79,12 @@ public class GameManager : MonoBehaviour
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
         if (shake && !firstTime) shake.Shake();
         firstTime = false;
+        if (Object.FindAnyObjectByType<GameUIManager>() != null)
+        {
+            Object.FindAnyObjectByType<GameUIManager>().GetComponent<GameUIManager>().ToggleUIvisible();
+        }
+            
+        
         audioSource.PlayOneShot(Resources.Load<AudioClip>("StartLevel"));
     }
 
