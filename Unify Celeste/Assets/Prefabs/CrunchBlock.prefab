@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4295395888826519387}
   - component: {fileID: 3009481726567840153}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sprite (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 900714983096819097}
   - component: {fileID: 1328314778019344199}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5009759810889494861}
   - component: {fileID: 4988765256487920732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 3908087901531653131}
   - component: {fileID: 3233585765735761096}
   - component: {fileID: 5126386439572359476}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CrunchBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   - component: {fileID: 6751564575533928128}
   - component: {fileID: 8882184805264577869}
   - component: {fileID: 8412409266261585867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sprite (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
