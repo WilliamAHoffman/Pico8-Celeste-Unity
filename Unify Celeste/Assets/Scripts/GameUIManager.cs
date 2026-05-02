@@ -15,6 +15,7 @@ public class GameUIManager : MonoBehaviour
     {
         ToggleUIvisible();
         heightText.text = height;
+      
     }
 
     // Update is called once per frame
