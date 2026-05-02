@@ -4,9 +4,7 @@ public class Key : MonoBehaviour
 {
     private SpriteRenderer sr;
     private Collider2D cl;
-
-    // this may become a state in PlayerController
-    private bool keyCollected = false;
+    public bool keyCollected = false;
 
 
     void Start()
