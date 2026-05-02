@@ -5,9 +5,11 @@ public class LevelStorage : MonoBehaviour
 {
     public static LevelStorage instance;
     public int totalStrawberries;
-    public float totalTime;
+    public int timeElapsed;
     private AudioSource audioSource;
     private AudioClip currSong;
+
+
     void Awake()
     {
         if (instance)
@@ -25,6 +27,10 @@ public class LevelStorage : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Start()
+    {
+        InvokeRepeating("AddTime", 1, 1);
+    }
     public void PlaySong(AudioClip newSong)
     {
         if(newSong != currSong)
@@ -45,5 +51,12 @@ public class LevelStorage : MonoBehaviour
     public void PlaySFX(AudioClip s)
     {
         audioSource.PlayOneShot(s);
+    }
+
+    void AddTime()
+    {
+        //need to add a condition which only changes the time when the time is running (the game is not paused)
+        timeElapsed++;
+        
     }
 }
