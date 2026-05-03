@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Reflection.Emit;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -117,9 +118,9 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround();
         CheckWall();
-        CheckCling();
 
         HorizontalCheck();
+        CheckCling();
         JumpCheck();
         LookCheck();
         DashCheck();
@@ -127,10 +128,14 @@ public class PlayerController : MonoBehaviour
         jumpPressed = false;
         dashPressed = false;
 
-        if (onGround && !isAbleToDash && !isDashing)
+        if (onGround && (!isAbleToDash || (!isAbleToDoubleDash && unlockedDoubleDash)) && !isDashing)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("RegainDash"));
             isAbleToDash = true;
+            if (unlockedDoubleDash)
+            {
+                isAbleToDoubleDash = true;
+            }
         }
     }
     void CheckCling()
@@ -138,6 +143,14 @@ public class PlayerController : MonoBehaviour
         if (wallCling)
         {
             rb.linearVelocity = new Vector2(0, -wallSpeed);
+            if(wallDirection == 1)
+            {
+                faceRight = true;
+            }
+            if(wallDirection == -1)
+            {
+                faceRight = false;
+            }
         }
     }
     void HorizontalCheck()
@@ -257,7 +270,14 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         ap.PlayOneShot(Resources.Load<AudioClip>("Dash"));
-        isAbleToDash = false;
+        if (isAbleToDoubleDash)
+        {
+            isAbleToDoubleDash = false;
+        }
+        else
+        {
+            isAbleToDash = false;
+        }
 
         dashingDirection = moveInput;
 
@@ -272,6 +292,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator StopDashing()
     {
         yield return new WaitForSeconds(dashingTime);
+        rb.linearVelocity = rb.linearVelocity.normalized * speed;
         isDashing = false;
     }
 
