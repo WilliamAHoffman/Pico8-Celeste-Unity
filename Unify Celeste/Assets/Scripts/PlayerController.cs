@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Reflection.Emit;
 using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private AudioSource ap;
+    [SerializeField] GameObject deathSpritePrefab;
 
     void Awake()
     {
@@ -392,8 +394,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer == deadly)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
-
-            //there should be a delay here and a chance for the particle anim on death to play
+            Instantiate(deathSpritePrefab, transform.position, quaternion.identity);
             FindFirstObjectByType<GameManager>().StartReload();
             LevelStorage.instance.numDeaths++;
         }
