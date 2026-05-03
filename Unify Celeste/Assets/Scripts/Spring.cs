@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class Spring : MonoBehaviour
@@ -31,14 +31,16 @@ public class Spring : MonoBehaviour
             Rigidbody2D playerRB = collision.gameObject.GetComponent<Rigidbody2D>();
             //launch the player up here
 
+            collision.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
+            if(collision.gameObject.GetComponent<PlayerController>().unlockedDoubleDash) collision.gameObject.GetComponent<PlayerController>().isAbleToDoubleDash = true;
+
             playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x, strength);
             active = false;
             GetComponent<SpriteRenderer>().sprite = pressed_sprite;
             if (fade_block != null)
             {
                 fade_block.GetComponent<Animator>().Play("FadingBlockAnim");
-                Invoke("ResetSpring", .25f);
-                Invoke("SpringNoise", .2f);
+                gameObject.SetActive(false);
             }
             else
             {

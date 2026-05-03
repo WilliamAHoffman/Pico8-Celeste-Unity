@@ -26,4 +26,11 @@ public class Key : MonoBehaviour
             Debug.Log("key collected");
         }
     }
+
+    public void Reset()
+    {
+        sr.enabled = true;
+        cl.enabled = true;
+        keyCollected = false;
+    }
 }

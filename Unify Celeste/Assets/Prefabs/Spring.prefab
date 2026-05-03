@@ -79,7 +79,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.7}
+  m_Size: {x: 0.5, y: 0.6}
   m_EdgeRadius: 0
 --- !u!212 &2780270393886711245
 SpriteRenderer:
@@ -154,7 +154,7 @@ MonoBehaviour:
   fade_block: {fileID: 0}
   pressed_sprite: {fileID: -7883866192385575364, guid: 08556dd3a143f2240911f7543b3794d7, type: 3}
   normal_sprite: {fileID: -8942817527115040722, guid: 08556dd3a143f2240911f7543b3794d7, type: 3}
-  strength: 15
+  strength: 13
 --- !u!82 &860342190640273408
 AudioSource:
   m_ObjectHideFlags: 0

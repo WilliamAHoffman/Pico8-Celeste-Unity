@@ -62,6 +62,8 @@ public class FlyingStrawberry : MonoBehaviour
         {
             return;
         }
+        c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
+        if(c.gameObject.GetComponent<PlayerController>().unlockedDoubleDash) c.gameObject.GetComponent<PlayerController>().isAbleToDoubleDash = true;
 
         if (LevelStorage.instance != null)
         {

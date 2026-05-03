@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("Wall")]
     [SerializeField] float wallJumpTime = 0.3f;
     [SerializeField] float wallSpeed = 1f;
+    [SerializeField] float wallJumpingMult = 1.2f;
 
     [Header("Dashing")]
     [SerializeField] float dashingVelocity = 10f;
@@ -267,7 +268,7 @@ public class PlayerController : MonoBehaviour
     {
         wallCling = false;
         ap.PlayOneShot(Resources.Load<AudioClip>("WallJump"));
-        rb.linearVelocity = new Vector2(-wallDirection * jump, jump);
+        rb.linearVelocity = new Vector2(-wallDirection * jump * wallJumpingMult, jump);
         wallJumping = true;
         StartCoroutine(StopWallJumping());
     }
@@ -459,10 +460,15 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == deadly)
         {
-            ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
-            Instantiate(deathSpritePrefab, transform.position, quaternion.identity);
-            FindFirstObjectByType<GameManager>().StartReload();
-            LevelStorage.instance.numDeaths++;
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
+        Instantiate(deathSpritePrefab, transform.position, quaternion.identity);
+        FindFirstObjectByType<GameManager>().StartReload();
+        LevelStorage.instance.numDeaths++;
     }
 }

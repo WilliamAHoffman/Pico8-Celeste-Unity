@@ -4950,8 +4950,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 7.5
   jump: 9.1
+  normalAcceleration: 60
+  normalDeceleration: 80
+  iceAcceleration: 18
+  iceDeceleration: 4
+  iceTag: Ice
   wallJumpTime: 0.23
   wallSpeed: 1.3
+  wallJumpingMult: 1.1
   dashingVelocity: 13
   dashingTime: 0.23
   isAbleToDash: 1
@@ -4964,12 +4970,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheckDistance: 0.53
-  wallCheckDistance: 0.53
-  groundRayOffset: 0.5
+  wallCheckDistance: 0.5
+  groundRayOffset: 0.45
   bottomWallRayOffset: 0.5
   topWallRayOffset: 0.4
   deadly: 8
   onGround: 0
+  onIce: 0
   walking: 0
   onWall: 0
   wallCling: 0
@@ -5051,7 +5058,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.9}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!66 &4385951240813743476
 CompositeCollider2D:

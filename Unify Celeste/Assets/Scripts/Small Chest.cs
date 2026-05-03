@@ -4,6 +4,7 @@ public class SmallChest : MonoBehaviour
 {
    
     public GameObject strawberryPrefab;
+    private GameObject strawberry;
     SpriteRenderer sr;
     private bool chestOpened = false;
     AudioSource ap;
@@ -18,17 +19,25 @@ public class SmallChest : MonoBehaviour
     {
         if (Key.keyCollected && !chestOpened)
         {
-            StartCoroutine(SpawnStrawberry());
+            SpawnStrawberry();
             chestOpened = true;
         }
     }
 
-    IEnumerator SpawnStrawberry()
+    void SpawnStrawberry()
     {
 
         ap.PlayOneShot(Resources.Load<AudioClip>("OpenChest"));
-        yield return new WaitForSeconds(1.5f);
         sr.enabled = false;
-        Instantiate(strawberryPrefab, transform.position + Vector3.up, Quaternion.identity);
+        strawberry = Instantiate(strawberryPrefab, transform.position + Vector3.up, Quaternion.identity);
+    }
+
+    public void Restart()
+    {
+        if(!strawberry) return;
+        Destroy(strawberry);
+        sr.enabled = true;
+        chestOpened = false;
+        FindFirstObjectByType<Key>().Reset();
     }
 }

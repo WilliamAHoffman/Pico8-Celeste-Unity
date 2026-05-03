@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         gameActive = true;
         audioSource = GetComponent<AudioSource>();
         if(!LevelStorage.instance)Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
-        if(SceneManager.GetActiveScene().buildIndex >= 22)
+        if(SceneManager.GetActiveScene().buildIndex > 22)
         {
             LevelStorage.instance.canDoubleDash = true;
         }
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         {
             if (player.transform.position.y <= -levelYBounds)
             {
-                StartCoroutine("StartReload");
+                player.GetComponent<PlayerController>().Die();
             }
             else if (player.transform.position.y >= levelYBounds)
             {
@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
         if(firstTime) return;
         foreach(FadingBlock block in FindObjectsByType<FadingBlock>(sortMode: FindObjectsSortMode.None))
         {
+            block.StopAllCoroutines();
             block.gameObject.SetActive(true);
             block.ResetBlock();
         }
@@ -117,6 +118,16 @@ public class GameManager : MonoBehaviour
         foreach(Balloon balloon in FindObjectsByType<Balloon>(sortMode: FindObjectsSortMode.None))
         {
             balloon.Respawn();
+        }
+
+        foreach(LinearMovement obj in FindObjectsByType<LinearMovement>(sortMode: FindObjectsSortMode.None))
+        {
+            obj.gameObject.transform.position = obj.startLocation;
+        }
+
+        foreach(SmallChest chest in FindObjectsByType<SmallChest>(sortMode: FindObjectsSortMode.None))
+        {
+            chest.Restart();
         }
     }
 }
