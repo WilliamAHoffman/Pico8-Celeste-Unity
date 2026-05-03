@@ -8,6 +8,7 @@ public class OrbGet : MonoBehaviour
         {
             c.gameObject.GetComponent<PlayerController>().unlockedDoubleDash = true;
             LevelStorage.instance.canDoubleDash = true;
+            LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("PowerUp"));
             Destroy(gameObject);
         }
     }
