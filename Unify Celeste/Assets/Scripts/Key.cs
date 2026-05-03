@@ -4,7 +4,7 @@ public class Key : MonoBehaviour
 {
     private SpriteRenderer sr;
     private Collider2D cl;
-    public bool keyCollected = false;
+    public static bool keyCollected = false;
 
 
     void Start()
@@ -20,6 +20,7 @@ public class Key : MonoBehaviour
             sr.enabled = false;
             cl.enabled = false;
             keyCollected = true;
+            Debug.Log("key collected");
         }
     }
 }
