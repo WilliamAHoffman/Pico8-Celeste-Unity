@@ -339,6 +339,7 @@ public class PlayerController : MonoBehaviour
 
             //there should be a delay here and a chance for the particle anim on death to play
             FindFirstObjectByType<GameManager>().StartReload();
+            LevelStorage.instance.numDeaths++;
         }
     }
 }
