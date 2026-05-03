@@ -1,17 +1,21 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Strawberry : MonoBehaviour
 {
- 
+
+    [SerializeField] GameObject scoreUI;
     private void OnTriggerEnter2D(Collider2D c)
     {
         if (c.gameObject.GetComponent<PlayerController>())
         {
             if(LevelStorage.instance) LevelStorage.instance.totalStrawberries++;
+            if (LevelStorage.instance) LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("CollectStrawberry"));
             c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
+            Instantiate(scoreUI, transform.position, Quaternion.identity);
             Destroy(gameObject);
 
-            if (LevelStorage.instance) LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("CollectStrawberry"));
+            
         }
     }
 }

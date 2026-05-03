@@ -38,10 +38,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float wallCheckDistance = 0.6f;
     [SerializeField] float groundRayOffset = 0.4f;
     [SerializeField] float bottomWallRayOffset = 0.4f;
-    [SerializeField] float topWallRayOffset = 0.4f;        
+    [SerializeField] float topWallRayOffset = 0.4f;
 
     [Header("Extra")]
-    [SerializeField] int deadly;   
+    [SerializeField] int deadly;
 
     [Header("States")]
     public bool onGround;
@@ -61,19 +61,53 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        inputActions["Move"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputActions["Move"].canceled += ctx => moveInput = Vector2.zero;
+        inputActions["Move"].performed += OnMovePerformed;
+        inputActions["Move"].canceled += OnMoveCanceled;
 
-        inputActions["Jump"].started += ctx => jumpPressed = true;
-        inputActions["Dash"].started += ctx => dashPressed = true;
+        inputActions["Jump"].started += OnJumpStarted;
+        inputActions["Dash"].started += OnDashStarted;
+
         ap = GetComponent<AudioSource>();
-
-
     }
 
-    void OnEnable() => inputActions.Enable();
-    void OnDisable() => inputActions.Disable();
+    void OnEnable()
+    {
+        inputActions.Enable();
+    }
 
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
+    void OnDestroy()
+    {
+        inputActions["Move"].performed -= OnMovePerformed;
+        inputActions["Move"].canceled -= OnMoveCanceled;
+
+        inputActions["Jump"].started -= OnJumpStarted;
+        inputActions["Dash"].started -= OnDashStarted;
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext ctx)
+    {
+        moveInput = Vector2.zero;
+    }
+
+    private void OnJumpStarted(InputAction.CallbackContext ctx)
+    {
+        jumpPressed = true;
+    }
+
+    private void OnDashStarted(InputAction.CallbackContext ctx)
+    {
+        dashPressed = true;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -110,7 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         wallCling = false;
         if (isDashing) return;
-        if(wallJumping && !onGround) return;
+        if (wallJumping && !onGround) return;
         if (onWall && !onGround)
         {
             if (moveInput.x >= 0.5f && wallDirection == 1) wallCling = true;
@@ -120,18 +154,19 @@ public class PlayerController : MonoBehaviour
         if (!wallCling)
         {
             rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
-            if(moveInput.x > 0)
+            if (moveInput.x > 0)
             {
                 faceRight = true;
             }
-            if(moveInput.x < 0)
+            if (moveInput.x < 0)
             {
                 faceRight = false;
             }
             if (moveInput.x == 0)
             {
                 walking = false;
-            }else
+            }
+            else
             {
                 walking = true;
             }
@@ -200,17 +235,17 @@ public class PlayerController : MonoBehaviour
         {
             StartDash();
             ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
-            if(shake) shake.Shake();
-            
+            if (shake) shake.Shake();
+
         }
 
         if (isDashing)
         {
-            if(dashingDirection.x > 0)
+            if (dashingDirection.x > 0)
             {
                 faceRight = true;
             }
-            if(dashingDirection.x < 0)
+            if (dashingDirection.x < 0)
             {
                 faceRight = false;
             }
@@ -333,7 +368,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == deadly)
+        if (collision.gameObject.layer == deadly)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
 

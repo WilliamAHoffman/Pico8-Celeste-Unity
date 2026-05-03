@@ -8,10 +8,12 @@ public class SmallChest : MonoBehaviour
     public GameObject strawberryPrefab;
     SpriteRenderer sr;
     private bool chestOpened = false;
+    AudioSource ap;
    
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        ap = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -25,6 +27,8 @@ public class SmallChest : MonoBehaviour
 
     IEnumerator SpawnStrawberry()
     {
+
+        ap.PlayOneShot(Resources.Load<AudioClip>("OpenChest"));
         yield return new WaitForSeconds(1.5f);
         sr.enabled = false;
         Instantiate(strawberryPrefab, transform.position, Quaternion.identity);
