@@ -15,11 +15,19 @@ public class PlayerAnimations : MonoBehaviour
 
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private PlayerController player;
-    [SerializeField] TrailRenderer trailRenderer;
     [SerializeField] ParticleSystem particles;
     [SerializeField] private Animator animator;
     [SerializeField] private int dashState;
     [SerializeField] private List<Color> dashColors;
+
+    [SerializeField] private float emitDelay;
+    [SerializeField] private int emitCount;
+    private int emitCurrCount;
+    private float emitTimer;
+
+    [SerializeField] private float hairColorDelay;
+    private float hairColorTimer;
+    private bool hairGreen;
 
     private FinalState finalState;
     private FinalState previousFinalState;
@@ -50,12 +58,30 @@ public class PlayerAnimations : MonoBehaviour
             dashState = 0;
         }
 
-        if (dashColors != null && dashState < dashColors.Count)
+        if (dashColors != null && dashState < 2)
         {
             runtimeMaterial.SetColor(ReplacementColorId, dashColors[dashState]);
         }
-
-        trailRenderer.emitting = player.isDashing;
+        else if(dashState == 2)
+        {
+            if(hairColorTimer <= 0)
+            {
+                hairColorTimer = hairColorDelay;
+                if (hairGreen)
+                {
+                    runtimeMaterial.SetColor(ReplacementColorId, dashColors[2]);
+                }
+                else
+                {
+                    runtimeMaterial.SetColor(ReplacementColorId, dashColors[3]);
+                }
+                hairGreen = !hairGreen;
+            }
+            else
+            {
+                hairColorTimer -= Time.deltaTime;
+            }
+        }
 
         if (player.wallCling)
         {
@@ -92,9 +118,19 @@ public class PlayerAnimations : MonoBehaviour
             }
         }
 
-        if (player.isDashing)
+        if (player.isDashing && emitCurrCount <= 0)
         {
+            emitTimer = emitDelay;
+            emitCurrCount = emitCount;
+        }
+        if(emitTimer <= 0){
             particles.Emit(1);
+            emitTimer = emitDelay;
+            emitCurrCount -= 1;
+         }
+         else if(emitCurrCount > 0)
+        {
+            emitTimer -= Time.deltaTime;
         }
 
         switch (finalState)

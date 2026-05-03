@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] string nextLevel;
     [SerializeField] GameObject levelStoragePrefab;
     [SerializeField] float playerUpSpeed;
+    private GameUIManager gameUIManager;
     public GameObject playerPrefab;
+    public bool playerUnlockDoubleDash;
     private GameObject player;
     private bool firstTime;
     private bool playerMoveUp;
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
         StartReload();
         if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
         if(level_music) LevelStorage.instance.PlaySong(level_music);
+        gameUIManager = FindFirstObjectByType<GameUIManager>();
     }
 
     void FixedUpdate()
@@ -71,6 +74,7 @@ public class GameManager : MonoBehaviour
         gameActive = false;
 
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        player.GetComponent<PlayerController>().unlockedDoubleDash = playerUnlockDoubleDash;
         player.GetComponent<PlayerController>().ReloadPlayer();
         AllowMovement(false);
         player.transform.position = new Vector3(spawnLocation.position.x,-9);
@@ -79,9 +83,9 @@ public class GameManager : MonoBehaviour
         ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
         if (shake && !firstTime) shake.Shake();
         firstTime = false;
-        if (Object.FindAnyObjectByType<GameUIManager>() != null)
+        if (gameUIManager)
         {
-            Object.FindAnyObjectByType<GameUIManager>().GetComponent<GameUIManager>().ToggleUIvisible();
+            gameUIManager.ToggleUIvisible();
         }
             
         

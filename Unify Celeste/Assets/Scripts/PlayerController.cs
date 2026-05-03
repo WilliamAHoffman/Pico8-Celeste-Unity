@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Reflection.Emit;
 using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private AudioSource ap;
+    [SerializeField] GameObject deathSpritePrefab;
 
     void Awake()
     {
@@ -117,9 +120,9 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround();
         CheckWall();
-        CheckCling();
 
         HorizontalCheck();
+        CheckCling();
         JumpCheck();
         LookCheck();
         DashCheck();
@@ -127,10 +130,14 @@ public class PlayerController : MonoBehaviour
         jumpPressed = false;
         dashPressed = false;
 
-        if (onGround && !isAbleToDash && !isDashing)
+        if (onGround && (!isAbleToDash || (!isAbleToDoubleDash && unlockedDoubleDash)) && !isDashing)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("RegainDash"));
             isAbleToDash = true;
+            if (unlockedDoubleDash)
+            {
+                isAbleToDoubleDash = true;
+            }
         }
     }
     void CheckCling()
@@ -138,6 +145,14 @@ public class PlayerController : MonoBehaviour
         if (wallCling)
         {
             rb.linearVelocity = new Vector2(0, -wallSpeed);
+            if(wallDirection == 1)
+            {
+                faceRight = true;
+            }
+            if(wallDirection == -1)
+            {
+                faceRight = false;
+            }
         }
     }
     void HorizontalCheck()
@@ -257,7 +272,14 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         ap.PlayOneShot(Resources.Load<AudioClip>("Dash"));
-        isAbleToDash = false;
+        if (isAbleToDoubleDash)
+        {
+            isAbleToDoubleDash = false;
+        }
+        else
+        {
+            isAbleToDash = false;
+        }
 
         dashingDirection = moveInput;
 
@@ -272,6 +294,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator StopDashing()
     {
         yield return new WaitForSeconds(dashingTime);
+        rb.linearVelocity = rb.linearVelocity.normalized * speed;
         isDashing = false;
     }
 
@@ -371,8 +394,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer == deadly)
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("Death"));
-
-            //there should be a delay here and a chance for the particle anim on death to play
+            Instantiate(deathSpritePrefab, transform.position, quaternion.identity);
             FindFirstObjectByType<GameManager>().StartReload();
             LevelStorage.instance.numDeaths++;
         }

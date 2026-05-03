@@ -11582,6 +11582,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 3c23b44d7f4cb2743aea07d0687761e2, type: 3}
     - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
+      propertyPath: levelYBounds
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259747334198307437, guid: 9105c999bb93d5548be1fa690ac2aa3b, type: 3}
       propertyPath: playerUpSpeed
       value: 7
       objectReference: {fileID: 0}
