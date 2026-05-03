@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34744ec722ea34d0aa17dd608611fcc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Strawberry
+  scoreUI: {fileID: 1591913723422758336, guid: 131bfdae8f1804b4db10a03cee2d3147, type: 3}
 --- !u!58 &-3223485312733626516
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingStrawberry
   speed: 5
+  scoreUI: {fileID: 0}
 --- !u!114 &3764942655590940033
 MonoBehaviour:
   m_ObjectHideFlags: 0

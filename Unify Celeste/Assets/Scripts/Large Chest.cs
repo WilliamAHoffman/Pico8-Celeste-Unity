@@ -9,10 +9,12 @@ public class LargeChest : MonoBehaviour
 
     [SerializeField] float speed;
     public GameObject chestLid;
-   
+
+    AudioSource ap;
     void Start()
     {
         sr = chestLid.GetComponentsInChildren<SpriteRenderer>();
+        ap = gameObject.AddComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D c)
@@ -20,6 +22,7 @@ public class LargeChest : MonoBehaviour
         if (c.gameObject.GetComponent<PlayerController>() && !chestOpened)
         {
             StartCoroutine(Orb());
+            ap.PlayOneShot(Resources.Load<AudioClip>("BigChestOpen"));
             chestOpened = true;
             foreach (var s in sr)
             {
