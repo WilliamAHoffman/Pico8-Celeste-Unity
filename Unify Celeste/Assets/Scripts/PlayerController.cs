@@ -1,16 +1,20 @@
 using System.Collections;
-using System.Reflection.Emit;
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float speed = 4f;
     [SerializeField] float jump = 5f;
+
+    [Header("Ground Movement")]
+    [SerializeField] float normalAcceleration = 60f;
+    [SerializeField] float normalDeceleration = 80f;
+    [SerializeField] float iceAcceleration = 18f;
+    [SerializeField] float iceDeceleration = 4f;
+    [SerializeField] string iceTag = "Ice";
 
     [Header("Wall")]
     [SerializeField] float wallJumpTime = 0.3f;
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("States")]
     public bool onGround;
+    public bool onIce;
     public bool walking;
     public bool onWall;
     public bool wallCling;
@@ -57,9 +62,9 @@ public class PlayerController : MonoBehaviour
     public bool wallJumping;
     public bool faceRight;
 
-
     private Rigidbody2D rb;
     private AudioSource ap;
+
     [SerializeField] GameObject deathSpritePrefab;
 
     void Awake()
@@ -111,6 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         dashPressed = true;
     }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -134,57 +140,85 @@ public class PlayerController : MonoBehaviour
         {
             ap.PlayOneShot(Resources.Load<AudioClip>("RegainDash"));
             isAbleToDash = true;
+
             if (unlockedDoubleDash)
             {
                 isAbleToDoubleDash = true;
             }
         }
     }
+
     void CheckCling()
     {
         if (wallCling)
         {
             rb.linearVelocity = new Vector2(0, -wallSpeed);
-            if(wallDirection == 1)
+
+            if (wallDirection == 1)
             {
                 faceRight = true;
             }
-            if(wallDirection == -1)
+
+            if (wallDirection == -1)
             {
                 faceRight = false;
             }
         }
     }
+
     void HorizontalCheck()
     {
         wallCling = false;
+
         if (isDashing) return;
         if (wallJumping && !onGround) return;
+
         if (onWall && !onGround)
         {
-            if (moveInput.x >= 0.5f && wallDirection == 1) wallCling = true;
-            else if (moveInput.x <= -0.5f && wallDirection == -1) wallCling = true;
+            if (moveInput.x >= 0.5f && wallDirection == 1)
+            {
+                wallCling = true;
+            }
+            else if (moveInput.x <= -0.5f && wallDirection == -1)
+            {
+                wallCling = true;
+            }
         }
 
         if (!wallCling)
         {
-            rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+            float targetXVelocity = moveInput.x * speed;
+
+            float accelerationRate;
+
+            if (Mathf.Abs(moveInput.x) > 0.01f)
+            {
+                accelerationRate = onIce ? iceAcceleration : normalAcceleration;
+            }
+            else
+            {
+                accelerationRate = onIce ? iceDeceleration : normalDeceleration;
+            }
+
+            float newXVelocity = Mathf.MoveTowards(
+                rb.linearVelocity.x,
+                targetXVelocity,
+                accelerationRate * Time.fixedDeltaTime
+            );
+
+            rb.linearVelocity = new Vector2(newXVelocity, rb.linearVelocity.y);
+
             if (moveInput.x > 0)
             {
                 faceRight = true;
             }
+
             if (moveInput.x < 0)
             {
                 faceRight = false;
             }
-            if (moveInput.x == 0)
-            {
-                walking = false;
-            }
-            else
-            {
-                walking = true;
-            }
+
+            walking = Mathf.Abs(moveInput.x) > 0.01f;
         }
     }
 
@@ -249,9 +283,13 @@ public class PlayerController : MonoBehaviour
         if (dashPressed && isAbleToDash && !isDashing)
         {
             StartDash();
-            ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
-            if (shake) shake.Shake();
 
+            ScreenShake shake = Camera.main.GetComponent<ScreenShake>();
+
+            if (shake)
+            {
+                shake.Shake();
+            }
         }
 
         if (isDashing)
@@ -260,10 +298,12 @@ public class PlayerController : MonoBehaviour
             {
                 faceRight = true;
             }
+
             if (dashingDirection.x < 0)
             {
                 faceRight = false;
             }
+
             rb.linearVelocity = dashingDirection.normalized * dashingVelocity;
         }
     }
@@ -272,6 +312,7 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         ap.PlayOneShot(Resources.Load<AudioClip>("Dash"));
+
         if (isAbleToDoubleDash)
         {
             isAbleToDoubleDash = false;
@@ -285,7 +326,7 @@ public class PlayerController : MonoBehaviour
 
         if (dashingDirection == Vector2.zero)
         {
-            dashingDirection = new Vector2(transform.localScale.x, 0);
+            dashingDirection = faceRight ? Vector2.right : Vector2.left;
         }
 
         StartCoroutine(StopDashing());
@@ -306,6 +347,7 @@ public class PlayerController : MonoBehaviour
             crouching = false;
             return;
         }
+
         lookingUp = onGround && moveInput.y > 0.5f;
         crouching = onGround && moveInput.y < -0.5f;
     }
@@ -314,10 +356,33 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 pos = transform.position;
 
-        RaycastHit2D left = Physics2D.Raycast(pos + Vector2.left * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
-        RaycastHit2D right = Physics2D.Raycast(pos + Vector2.right * groundRayOffset, Vector2.down, groundCheckDistance, groundLayer);
+        RaycastHit2D left = Physics2D.Raycast(
+            pos + Vector2.left * groundRayOffset,
+            Vector2.down,
+            groundCheckDistance,
+            groundLayer
+        );
+
+        RaycastHit2D right = Physics2D.Raycast(
+            pos + Vector2.right * groundRayOffset,
+            Vector2.down,
+            groundCheckDistance,
+            groundLayer
+        );
 
         onGround = left.collider != null || right.collider != null;
+
+        onIce = false;
+
+        if (left.collider != null && left.collider.CompareTag(iceTag))
+        {
+            onIce = true;
+        }
+
+        if (right.collider != null && right.collider.CompareTag(iceTag))
+        {
+            onIce = true;
+        }
     }
 
     void CheckWall()
@@ -331,6 +396,7 @@ public class PlayerController : MonoBehaviour
         {
             leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.down * bottomWallRayOffset, wallCheckDistance, groundLayer);
         }
+
         if (!leftWall)
         {
             leftWall = Physics2D.Raycast(pos, Vector2.left + Vector2.up * topWallRayOffset, wallCheckDistance, groundLayer);
@@ -340,6 +406,7 @@ public class PlayerController : MonoBehaviour
         {
             rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.down * bottomWallRayOffset, wallCheckDistance, groundLayer);
         }
+
         if (!rightWall)
         {
             rightWall = Physics2D.Raycast(pos, Vector2.right + Vector2.up * topWallRayOffset, wallCheckDistance, groundLayer);
@@ -367,6 +434,7 @@ public class PlayerController : MonoBehaviour
         faceRight = true;
         isDashing = false;
         onGround = true;
+        onIce = false;
     }
 
     void OnDrawGizmos()
@@ -374,11 +442,9 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Vector2 pos = transform.position;
 
-        // ground
         Gizmos.DrawLine(pos + Vector2.left * groundRayOffset, pos + Vector2.left * groundRayOffset + Vector2.down * groundCheckDistance);
         Gizmos.DrawLine(pos + Vector2.right * groundRayOffset, pos + Vector2.right * groundRayOffset + Vector2.down * groundCheckDistance);
 
-        // walls
         Gizmos.DrawLine(pos, pos + Vector2.left * wallCheckDistance);
         Gizmos.DrawLine(pos, pos + Vector2.right * wallCheckDistance);
 

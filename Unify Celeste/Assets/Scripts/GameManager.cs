@@ -1,10 +1,6 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using Unity.Mathematics;
-using UnityEngine.Events;
-
 public class GameManager : MonoBehaviour
 {
     [SerializeField] Transform spawnLocation;
@@ -14,10 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float levelYBounds;
     [SerializeField] string nextLevel;
     [SerializeField] GameObject levelStoragePrefab;
-    [SerializeField] float playerUpSpeed;
+    [SerializeField] float playerUpSpeed = 10;
     private GameUIManager gameUIManager;
     public GameObject playerPrefab;
-    public bool playerUnlockDoubleDash;
     private GameObject player;
     private bool firstTime;
     private bool playerMoveUp;
@@ -29,8 +24,12 @@ public class GameManager : MonoBehaviour
         firstTime = true;
         gameActive = true;
         audioSource = GetComponent<AudioSource>();
+        if(!LevelStorage.instance)Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
+        if(SceneManager.GetActiveScene().buildIndex >= 22)
+        {
+            LevelStorage.instance.canDoubleDash = true;
+        }
         StartReload();
-        if(!LevelStorage.instance) Instantiate(levelStoragePrefab, new Vector3(0,0,0), Quaternion.identity);
         if(level_music) LevelStorage.instance.PlaySong(level_music);
         gameUIManager = FindFirstObjectByType<GameUIManager>();
     }
@@ -47,6 +46,7 @@ public class GameManager : MonoBehaviour
             {
                 SceneManager.LoadScene(nextLevel);
             }
+            LevelStorage.instance.timeElapsed += Time.deltaTime;
         }
 
         if (playerMoveUp)
@@ -66,15 +66,14 @@ public class GameManager : MonoBehaviour
         playerMoveUp = false;
         AllowMovement(true);
     }
-
     public void StartReload()
     {
         if (!gameActive) return;
-
         gameActive = false;
+        RestartObjects();
 
         if(!player) player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
-        player.GetComponent<PlayerController>().unlockedDoubleDash = playerUnlockDoubleDash;
+        player.GetComponent<PlayerController>().unlockedDoubleDash = LevelStorage.instance.canDoubleDash;
         player.GetComponent<PlayerController>().ReloadPlayer();
         AllowMovement(false);
         player.transform.position = new Vector3(spawnLocation.position.x,-9);
@@ -97,5 +96,27 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerController>().enabled = state;
         player.GetComponent<Rigidbody2D>().simulated = state;
         player.GetComponent<Collider2D>().enabled = state;
+    }
+
+    private void RestartObjects()
+    {
+        if(firstTime) return;
+        foreach(FadingBlock block in FindObjectsByType<FadingBlock>(sortMode: FindObjectsSortMode.None))
+        {
+            block.gameObject.SetActive(true);
+            block.ResetBlock();
+        }
+
+        foreach(FlyingStrawberry berry in FindObjectsByType<FlyingStrawberry>(sortMode: FindObjectsSortMode.None))
+        {
+            berry.gameObject.transform.position = berry.gameObject.GetComponent<LinearMovement>().startLocation;
+            berry.gameObject.GetComponent<SinOscillator>().enabled = true;
+            berry.flying = false;
+        }
+
+        foreach(Balloon balloon in FindObjectsByType<Balloon>(sortMode: FindObjectsSortMode.None))
+        {
+            balloon.Respawn();
+        }
     }
 }

@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class LevelStorage : MonoBehaviour
 {
     public static LevelStorage instance;
     public int totalStrawberries;
     public int numDeaths;
-    public int timeElapsed;
+    public float timeElapsed;
+    public bool canDoubleDash;
     private AudioSource audioSource;
     private AudioClip currSong;
 
@@ -26,11 +26,6 @@ public class LevelStorage : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
-    }
-
-    private void Start()
-    {
-        InvokeRepeating("AddTime", 1, 1);
     }
     public void PlaySong(AudioClip newSong)
     {
@@ -52,12 +47,5 @@ public class LevelStorage : MonoBehaviour
     public void PlaySFX(AudioClip s)
     {
         audioSource.PlayOneShot(s);
-    }
-
-    void AddTime()
-    {
-        //need to add a condition which only changes the time when the time is running (the game is not paused)
-        timeElapsed++;
-        
     }
 }

@@ -1,53 +1,81 @@
-using Unity.VisualScripting;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class FlyingStrawberry : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] GameObject scoreUI;
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private GameObject scoreUI;
+
     private PlayerController player;
-    private bool flying = false;
-    bool justStarted=true;
-    
+    private AudioSource audioSource;
+    private SinOscillator sinOscillator;
+    private LinearMovement linearMovement;
 
-    AudioSource audioSource;
-
+    public bool flying = false;
 
     private void Start()
     {
-        
         audioSource = GetComponent<AudioSource>();
-        
+        sinOscillator = GetComponent<SinOscillator>();
+        linearMovement = GetComponent<LinearMovement>();
     }
-    void Update()
+
+    private void Update()
     {
-        if (!player)
+        if (player == null)
         {
             player = FindFirstObjectByType<PlayerController>();
+            return;
         }
-        else if (player.isDashing && !flying)
+
+        if (player.isDashing && !flying)
         {
-            flying = true;
-            if (justStarted)
-            {
-                justStarted = false;
-                audioSource.PlayOneShot(Resources.Load<AudioClip>("StrawberryFlee"));
-            }
-            GetComponent<LinearMovement>().ySpeed = speed;
+            StartFlying();
         }
     }
-        
-    
+
+    private void StartFlying()
+    {
+        flying = true;
+
+        AudioClip fleeClip = Resources.Load<AudioClip>("StrawberryFlee");
+        if (fleeClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(fleeClip);
+        }
+
+        if (sinOscillator != null)
+        {
+            sinOscillator.enabled = false;
+        }
+
+        if (linearMovement != null)
+        {
+            linearMovement.ySpeed = speed;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D c)
     {
-        if (c.gameObject.GetComponent<PlayerController>())
+        PlayerController playerController = c.GetComponent<PlayerController>();
+
+        if (playerController == null)
         {
-            if(LevelStorage.instance) LevelStorage.instance.totalStrawberries++;
-            if (LevelStorage.instance) LevelStorage.instance.PlaySFX(Resources.Load<AudioClip>("CollectStrawberry"));
-            //c.gameObject.GetComponent<PlayerController>().isAbleToDash = true;
-            Instantiate(scoreUI, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            return;
         }
+
+        if (LevelStorage.instance != null)
+        {
+            LevelStorage.instance.totalStrawberries++;
+
+            AudioClip collectClip = Resources.Load<AudioClip>("CollectStrawberry");
+            LevelStorage.instance.PlaySFX(collectClip);
+        }
+
+        if (scoreUI != null)
+        {
+            Instantiate(scoreUI, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
     }
 }

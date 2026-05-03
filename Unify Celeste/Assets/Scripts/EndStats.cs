@@ -1,7 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class EndStats : MonoBehaviour
@@ -19,7 +17,7 @@ public class EndStats : MonoBehaviour
     void Start()
     {
         statPanel.SetActive(false);
-        timeTaken = LevelStorage.instance.timeElapsed;
+        timeTaken = (int)LevelStorage.instance.timeElapsed;
         
 
     }
@@ -53,8 +51,8 @@ public class EndStats : MonoBehaviour
         statPanel.SetActive(showing);
         strawberryText.text = "x" + LevelStorage.instance.totalStrawberries;
         deathText.text= "deaths:"+ LevelStorage.instance.numDeaths;
-        TimeSpan time = TimeSpan.FromSeconds(timeTaken);
-        timeText.text = time.ToString(@"hh\:mm\:ss");
+        TimeSpan time = TimeSpan.FromSeconds(LevelStorage.instance.timeElapsed);
+        timeText.text = $"{(int)time.TotalHours:00}:{time.Minutes:00}:{time.Seconds:00}";
         
        
         

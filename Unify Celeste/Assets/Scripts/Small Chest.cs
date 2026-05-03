@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
-
 public class SmallChest : MonoBehaviour
 {
    
@@ -31,6 +29,6 @@ public class SmallChest : MonoBehaviour
         ap.PlayOneShot(Resources.Load<AudioClip>("OpenChest"));
         yield return new WaitForSeconds(1.5f);
         sr.enabled = false;
-        Instantiate(strawberryPrefab, transform.position, Quaternion.identity);
+        Instantiate(strawberryPrefab, transform.position + Vector3.up, Quaternion.identity);
     }
 }

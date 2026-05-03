@@ -9,8 +9,14 @@ public class LinearMovement : MonoBehaviour
     [SerializeField] float deathY;
     [SerializeField] bool reload;
     [SerializeField] float waitTime = 2;
+    [SerializeField] bool destoryer = true;
+    public Vector3 startLocation;
     private float waitTimer = -1;
 
+    void Start()
+    {
+        startLocation = transform.position;
+    }
     void FixedUpdate()
     {
         transform.position += new Vector3(xSpeed * Time.deltaTime, ySpeed * Time.deltaTime, 0);
@@ -30,7 +36,12 @@ public class LinearMovement : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(gameObject);
+                    if(destoryer) Destroy(gameObject);
+                    else
+                    {
+                        ySpeed = 0;
+                        xSpeed = 0;
+                    }
                 }
             }
         }

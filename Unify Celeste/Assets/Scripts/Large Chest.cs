@@ -35,6 +35,7 @@ public class LargeChest : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         GameObject orb = Instantiate(greenOrbPrefab, transform.position, Quaternion.identity);
+        orb.GetComponent<Collider2D>().enabled = false;
         StartCoroutine(StopMovement(orb.transform));
     }
 
@@ -53,5 +54,6 @@ public class LargeChest : MonoBehaviour
             yield return null;
         }
         o.position = end;
+        o.gameObject.GetComponent<Collider2D>().enabled = true;
     }
 }

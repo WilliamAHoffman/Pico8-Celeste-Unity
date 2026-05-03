@@ -1,9 +1,7 @@
-using Mono.Cecil;
+
 using System;
-using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -45,7 +43,7 @@ public class GameUIManager : MonoBehaviour
     void Update()
     {
         TimeSpan time = TimeSpan.FromSeconds(LevelStorage.instance.timeElapsed);
-        timeText.text = time.ToString(@"hh\:mm\:ss");
+        timeText.text = $"{(int)time.TotalHours:00}:{time.Minutes:00}:{time.Seconds:00}";
         //timeText.text = (Mathf.FloorToInt(LevelStorage.instance.timeElapsed / 3600) + ":" + Mathf.FloorToInt((LevelStorage.instance.timeElapsed % 3600) / 60) + ":" + Mathf.FloorToInt(LevelStorage.instance.timeElapsed % 60));
 
 
@@ -73,7 +71,7 @@ public class GameUIManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
-        foreach(var ps in FindObjectsOfType<ParticleSystem>())
+        foreach(var ps in FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None))
         {
             ps.Pause();
         }
@@ -89,7 +87,7 @@ public class GameUIManager : MonoBehaviour
     public void UnPause()
     {
         Time.timeScale = 1f;
-        foreach (var ps in FindObjectsOfType<ParticleSystem>())
+        foreach (var ps in FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None))
         {
             ps.Play();
         }

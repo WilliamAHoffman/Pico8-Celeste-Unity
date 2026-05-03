@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using TMPro;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;

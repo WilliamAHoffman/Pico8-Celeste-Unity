@@ -4949,11 +4949,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 7.5
-  jump: 9.2
-  wallJumpTime: 0.27
+  jump: 9.1
+  wallJumpTime: 0.23
   wallSpeed: 1.3
   dashingVelocity: 13
-  dashingTime: 0.22
+  dashingTime: 0.23
   isAbleToDash: 1
   isAbleToDoubleDash: 0
   unlockedDoubleDash: 1
