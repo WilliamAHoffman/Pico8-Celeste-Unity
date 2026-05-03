@@ -10,7 +10,7 @@ using UnityEngine.Tilemaps;
 public class Intro : MonoBehaviour
 {
     [SerializeField] InputActionAsset inputActions;
-   
+
 
     [SerializeField] AudioClip introMusic;
     [SerializeField] AudioClip startSFX;
@@ -18,7 +18,7 @@ public class Intro : MonoBehaviour
     [SerializeField] GameObject logoObj;
 
     [SerializeField] Color c1;
-    [SerializeField] Color c2;  
+    [SerializeField] Color c2;
     [SerializeField] Color c3;
     [SerializeField] Color c4;
 
@@ -26,57 +26,57 @@ public class Intro : MonoBehaviour
     float dur = .2f;
     AudioSource ap;
 
-    void Awake()
-    {
-        inputActions["Jump"].started += ctx => StartGame();
-        inputActions["Dash"].started += ctx => StartGame();
-    }
-
-    void OnEnable() => inputActions.Enable();
-    void OnDisable() => inputActions.Disable();
     void Start()
     {
-        ap= GetComponent<AudioSource>();
+        ap = GetComponent<AudioSource>();
         ap.clip = introMusic;
         ap.Play();
-        
+
+    }
+
+    void Awake()
+    {
+        inputActions["Jump"].started += OnStartGameInput;
+        inputActions["Dash"].started += OnStartGameInput;
+    }
+
+    void OnStartGameInput(InputAction.CallbackContext ctx)
+    {
+        StartGame();
     }
 
     void StartGame()
     {
-        ap.clip= startSFX;
-        ap.Play();
-        ap.loop = false;
-        StartCoroutine("FlashColors");
-    }
+        inputActions["Jump"].started -= OnStartGameInput;
+        inputActions["Dash"].started -= OnStartGameInput;
 
+        ap.clip = startSFX;
+        ap.loop = false;
+        ap.Play();
+
+        StartCoroutine(FlashColors());
+    }
 
     void ChangeLogoColor(Color c)
     {
-        
+
         if (c == c2)
         {
-            logoObj.GetComponent<Tilemap>().color = clear ;
+            logoObj.GetComponent<Tilemap>().color = clear;
         }
         else
         {
             logoObj.GetComponent<Tilemap>().color = c;
-         
+
         }
         textObj.GetComponent<Tilemap>().color = c;
     }
 
- 
+
 
     IEnumerator FlashColors()
     {
-        
-        ChangeLogoColor(c1);
-        yield return new WaitForSeconds(dur);
 
-        ChangeLogoColor(c2);
-        yield return new WaitForSeconds(dur);
-       
         ChangeLogoColor(c1);
         yield return new WaitForSeconds(dur);
 
@@ -85,7 +85,13 @@ public class Intro : MonoBehaviour
 
         ChangeLogoColor(c1);
         yield return new WaitForSeconds(dur);
-       
+
+        ChangeLogoColor(c2);
+        yield return new WaitForSeconds(dur);
+
+        ChangeLogoColor(c1);
+        yield return new WaitForSeconds(dur);
+
         ChangeLogoColor(c2);
         yield return new WaitForSeconds(dur);
 
@@ -107,7 +113,8 @@ public class Intro : MonoBehaviour
         yield return new WaitForSeconds(dur);
 
         SceneManager.LoadScene("Level 1");
-        
+        Destroy(gameObject);
+
 
 
     }
