@@ -107,6 +107,7 @@ public class Intro : MonoBehaviour
         yield return new WaitForSeconds(dur);
 
         SceneManager.LoadScene("Level 1");
+        
 
 
     }
