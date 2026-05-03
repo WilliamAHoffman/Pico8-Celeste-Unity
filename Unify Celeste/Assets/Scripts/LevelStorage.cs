@@ -5,6 +5,7 @@ public class LevelStorage : MonoBehaviour
 {
     public static LevelStorage instance;
     public int totalStrawberries;
+    public int numDeaths;
     public int timeElapsed;
     private AudioSource audioSource;
     private AudioClip currSong;

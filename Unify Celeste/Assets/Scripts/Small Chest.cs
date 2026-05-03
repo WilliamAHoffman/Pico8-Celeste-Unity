@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 public class SmallChest : MonoBehaviour
 {
-    public Key k;
+   
     public GameObject strawberryPrefab;
     SpriteRenderer sr;
     private bool chestOpened = false;
@@ -16,7 +16,7 @@ public class SmallChest : MonoBehaviour
 
     void Update()
     {
-        if (k.keyCollected && !chestOpened)
+        if (Key.keyCollected && !chestOpened)
         {
             StartCoroutine(SpawnStrawberry());
             chestOpened = true;
